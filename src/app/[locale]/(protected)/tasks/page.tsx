@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import PageHeader from "../../components/PageHeader";
-import TaskFilter from "../../components/Tabs/TaskFilter";
-import { Status, tasksMock } from "../../../mock/mockData";
-import AddTaskModal from "../../../modules/tasks/AddTaskModal";
-import TaskCard from "../../../modules/tasks/TaskCard";
+import PageHeader from "../../../components/PageHeader";
+import TaskFilter from "../../../components/Tabs/TaskFilter";
+import { Status, tasksMock } from "../../../../mock/mockData";
+import AddTaskModal from "../../../../modules/tasks/AddTaskModal";
+import TaskCard from "../../../../modules/tasks/TaskCard";
 import {useTranslations} from 'next-intl';
 
 export default function Tasks() {

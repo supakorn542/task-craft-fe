@@ -6,22 +6,30 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "openapi -i http://localhost:3001/api-json -o ./src/api/generated -c axios --name ApiClient --indent 2"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "antd": "^5.26.5",
+    "axios": "^1.11.0",
     "clsx": "^2.1.1",
+    "form-data": "^4.0.4",
     "next": "15.4.1",
     "next-intl": "^4.3.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-icons": "^5.5.0"
+    "react-hook-form": "^7.62.0",
+    "react-icons": "^5.5.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/form-data": "^2.5.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "openapi-typescript-codegen": "^0.29.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
