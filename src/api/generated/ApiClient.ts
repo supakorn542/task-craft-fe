@@ -7,11 +7,13 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { AppService } from './services/AppService';
 import { AuthService } from './services/AuthService';
+import { TaskService } from './services/TaskService';
 import { UserService } from './services/UserService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class ApiClient {
   public readonly app: AppService;
   public readonly auth: AuthService;
+  public readonly task: TaskService;
   public readonly user: UserService;
   public readonly request: BaseHttpRequest;
   constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
@@ -28,6 +30,7 @@ export class ApiClient {
     });
     this.app = new AppService(this.request);
     this.auth = new AuthService(this.request);
+    this.task = new TaskService(this.request);
     this.user = new UserService(this.request);
   }
 }

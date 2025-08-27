@@ -28,10 +28,10 @@ export default function Sidebar() {
   return (
     <>
       <aside className={`w-72 h-screen p-4`}>
-        <nav className="flex flex-col justify-between bg-[#F9FAFB] rounded-xl h-full p-4 shadow-sm">
+        <nav className="flex flex-col justify-between bg-bg-base rounded-xl h-full p-4 shadow-sm">
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-[#1F1F1F] text-xl font-semibold">
+              <h1 className="text-text-primary text-xl font-semibold">
                 Task Craft
               </h1>
               <LanguageSwitcher />
@@ -42,12 +42,12 @@ export default function Sidebar() {
           </div>
           <div>
             <ul>
-              <li className="flex items-center gap-2 text-[#464445] text-md cursor-pointer hover:bg-[#FACC15] p-2 rounded-lg">
+              <li className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg">
                 <RiListSettingsLine />
                 <h3>Settings</h3>
               </li>
               <li
-                className="flex items-center gap-2 text-[#464445] text-md cursor-pointer hover:bg-[#FACC15] p-2 rounded-lg"
+                className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
                 onClick={() => handleLogout()}
               >
                 <FaSignOutAlt />

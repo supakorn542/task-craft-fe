@@ -10,11 +10,13 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export type { AuthEntity } from './models/AuthEntity';
+
+export { CreateTaskRequestDto } from './models/CreateTaskRequestDto';
+export { CreateTaskResponseDto } from './models/CreateTaskResponseDto';
 export type { CreateUserDto } from './models/CreateUserDto';
 export type { LoginDto } from './models/LoginDto';
-export type { UserEntity } from './models/UserEntity';
 
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';
+export { TaskService } from './services/TaskService';
 export { UserService } from './services/UserService';

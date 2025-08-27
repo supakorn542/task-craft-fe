@@ -15,7 +15,7 @@ export default function TaskFilter() {
           className={clsx(
             "py-3 text-sm font-medium",
             activeFilter === f
-              ? "border-b-2 border-[#FACC15] text-gray-900"
+              ? "border-b-2 border-brand text-gray-900"
               : "text-gray-500 hover:text-gray-800"
           )}
         >

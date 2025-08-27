@@ -14,21 +14,21 @@ export default function MenuList() {
       <ul className="flex flex-col gap-2">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[#1F2937] text-sm cursor-pointer hover:bg-[#FACC15] p-2 rounded-lg"
+          className="flex items-center gap-2 text-text-secondary text-sm cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
         >
           <LuLayoutDashboard />
           <h3>Dashbaord</h3>
         </Link>
         <Link
           href={`/tasks`}
-          className="flex items-center gap-2 text-[#1F2937] text-sm cursor-pointer hover:bg-[#FACC15] p-2 rounded-lg"
+          className="flex items-center gap-2 text-text-secondary text-sm cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
         >
           <FaTasks />
           <h3>Tasks</h3>
         </Link>
         <Link
           href="/"
-          className="flex items-center gap-2 text-[#1F2937] text-sm cursor-pointer hover:bg-[#FACC15] p-2 rounded-lg"
+          className="flex items-center gap-2 text-text-secondary text-sm cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
         >
           <FaRegCalendarAlt />
           <h3>Calendar</h3>

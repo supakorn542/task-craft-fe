@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+
+@theme {
+  --color-brand: #FACC15;
+  --color-brand-hover: #E6B70F;
+  --color-brand-light: #FEF3C7;
+  --color-bg-base: #F9FAFB;
+  --color-bg-card: #FFFFFF;
+  --color-text-primary: #1F1F1F;
+  --color-text-secondary: #464445;
+}
+
+@layer utilities {
+  .bg-brand { background-color: var(--color-brand); }
+  .bg-brand-hover:hover { background-color: var(--color-brand-hover); }
+  .bg-bg-base { background-color: var(--color-bg-base); }
+  .bg-bg-card { background-color: var(--color-bg-card); }
+  .text-text-primary { color: var(--color-text-primary); }
+  .text-text-secondary { color: var(--color-text-secondary); }
+}

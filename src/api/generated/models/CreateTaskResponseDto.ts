@@ -1,0 +1,27 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export type CreateTaskResponseDto = {
+  id: string;
+  title: string;
+  description?: string;
+  status: CreateTaskResponseDto.status;
+  priority: CreateTaskResponseDto.priority;
+  dueDate?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+export namespace CreateTaskResponseDto {
+  export enum status {
+    PENDING = 'PENDING',
+    IN_PROGRESS = 'IN_PROGRESS',
+    DONE = 'DONE',
+  }
+  export enum priority {
+    LOW = 'LOW',
+    MEDIUM = 'MEDIUM',
+    HIGH = 'HIGH',
+  }
+}
+

@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { Button, Form } from "antd";
 import { FormInput } from "../../app/components/Input/FormInput";
 import { ApiError } from "@/api/generated";
-import { apiClient } from "@/api";
 import { useRouter } from "next/navigation";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { useAuth } from "@/app/contexts/AuthContext";
+import { CustomButton } from "@/app/components/Buttons/CustomButton";
 
 type LoginFormValues = {
   email: string;
@@ -53,9 +53,7 @@ export default function LoginForm() {
         rules={{ required: "Password is required" }}
       />
 
-      <Button type="primary" htmlType="submit">
-        Login
-      </Button>
+      <CustomButton type="submit">Login</CustomButton>
     </Form>
   );
 }
