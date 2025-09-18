@@ -2,13 +2,15 @@ import React from "react";
 import {
   Controller,
   Control,
-  FieldValues,
   Path,
+  FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import { Input, Form, InputProps } from "antd";
+import { Select, Form } from "antd";
 
-type FormInputProps<T extends FieldValues> = {
+type SelectProps = React.ComponentProps<typeof Select>;
+
+type SelectInputProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   label?: string;
@@ -16,17 +18,15 @@ type FormInputProps<T extends FieldValues> = {
     RegisterOptions<T, Path<T>>,
     "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
   >;
-  type?: React.InputHTMLAttributes<HTMLInputElement>["type"];
-} & InputProps;
+} & SelectProps;
 
-export function FormInput<T extends FieldValues>({
+export function SelectInput<T extends FieldValues>({
   name,
   control,
   label,
   rules,
-  type = "text",
   ...rest
-}: FormInputProps<T>) {
+}: SelectInputProps<T>) {
   return (
     <Form.Item label={label}>
       <Controller
@@ -35,11 +35,12 @@ export function FormInput<T extends FieldValues>({
         rules={rules}
         render={({ field, fieldState }) => (
           <>
-            {type === "password" ? (
-              <Input.Password {...field} {...rest} />
-            ) : (
-              <Input {...field} {...rest} />
-            )}
+            <Select
+              value={field.value}
+              onChange={(val) => field.onChange(val)}
+              onBlur={field.onBlur}
+              {...rest}
+            ></Select>
             {fieldState.error && (
               <span className="ml-1 text-xs text-red-500">
                 {fieldState.error.message}

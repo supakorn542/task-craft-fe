@@ -2,13 +2,14 @@ import React from "react";
 import {
   Controller,
   Control,
-  FieldValues,
   Path,
+  FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import { Input, Form, InputProps } from "antd";
+import { DatePicker, DatePickerProps, Form } from "antd";
+import dayjs, { Dayjs } from "dayjs";
 
-type FormInputProps<T extends FieldValues> = {
+type CustomDatePickerProps<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   label?: string;
@@ -16,17 +17,15 @@ type FormInputProps<T extends FieldValues> = {
     RegisterOptions<T, Path<T>>,
     "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
   >;
-  type?: React.InputHTMLAttributes<HTMLInputElement>["type"];
-} & InputProps;
+} & DatePickerProps;
 
-export function FormInput<T extends FieldValues>({
+export function CustomDatePicker<T extends FieldValues>({
   name,
   control,
   label,
   rules,
-  type = "text",
   ...rest
-}: FormInputProps<T>) {
+}: CustomDatePickerProps<T>) {
   return (
     <Form.Item label={label}>
       <Controller
@@ -35,13 +34,16 @@ export function FormInput<T extends FieldValues>({
         rules={rules}
         render={({ field, fieldState }) => (
           <>
-            {type === "password" ? (
-              <Input.Password {...field} {...rest} />
-            ) : (
-              <Input {...field} {...rest} />
-            )}
+            <DatePicker
+              value={field.value ? dayjs(field.value) : undefined}
+              onChange={(date) =>
+                field.onChange(date ? date.toISOString() : null)
+              }
+              onBlur={field.onBlur}
+              {...rest}
+            />
             {fieldState.error && (
-              <span className="ml-1 text-xs text-red-500">
+              <span className="ml-1 text-red-500 text-xs">
                 {fieldState.error.message}
               </span>
             )}

@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { NotificationProvider } from "../contexts/NotificationContext";
 import { AuthProvider } from "@/app/contexts/AuthContext";
+import { ConfigProvider } from "antd";
 
 type Props = {
   children: ReactNode;

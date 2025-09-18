@@ -53,7 +53,7 @@ export default function LoginForm() {
         rules={{ required: "Password is required" }}
       />
 
-      <CustomButton type="submit">Login</CustomButton>
+      <CustomButton htmlType="submit" variant="primary">Login</CustomButton>
     </Form>
   );
 }
