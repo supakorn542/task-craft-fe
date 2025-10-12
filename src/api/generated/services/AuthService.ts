@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { AuthEntity } from '../models/AuthEntity';
 import type { LoginDto } from '../models/LoginDto';
+import type { UserDto } from '../models/UserDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class AuthService {
@@ -50,10 +51,10 @@ export class AuthService {
     });
   }
   /**
-   * @returns void
+   * @returns UserDto
    * @throws ApiError
    */
-  public authControllerGetProfile(): CancelablePromise<void> {
+  public authControllerGetProfile(): CancelablePromise<UserDto> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/auth/profile',

@@ -2,11 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateTaskRequestDto = {
+export type UpdateTaskRequestDto = {
   /**
    * Title of the task
    */
-  title: string;
+  title?: string;
   /**
    * Detailed description of the task
    */
@@ -14,13 +14,13 @@ export type CreateTaskRequestDto = {
   /**
    * Current status of the task
    */
-  status?: CreateTaskRequestDto.status;
+  status?: UpdateTaskRequestDto.status;
   /**
    * Due date of the task in ISO string format
    */
   dueDate?: string | null;
 };
-export namespace CreateTaskRequestDto {
+export namespace UpdateTaskRequestDto {
   /**
    * Current status of the task
    */

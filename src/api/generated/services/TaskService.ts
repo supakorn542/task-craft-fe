@@ -5,6 +5,9 @@
 import type { CreateTaskRequestDto } from '../models/CreateTaskRequestDto';
 import type { CreateTaskResponseDto } from '../models/CreateTaskResponseDto';
 import type { GetPaginatedTaskResponseDto } from '../models/GetPaginatedTaskResponseDto';
+import type { GetTaskDetailResponseDto } from '../models/GetTaskDetailResponseDto';
+import type { UpdateTaskRequestDto } from '../models/UpdateTaskRequestDto';
+import type { UpdateTaskResponseDto } from '../models/UpdateTaskResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TaskService {
@@ -26,7 +29,7 @@ export class TaskService {
   }
   /**
    * @param status
-   * @param priority
+   * @param filter
    * @param search
    * @param page
    * @param limit
@@ -35,7 +38,7 @@ export class TaskService {
    */
   public taskControllerGetTasks(
     status?: 'PENDING' | 'IN_PROGRESS' | 'DONE',
-    priority?: 'LOW' | 'MEDIUM' | 'HIGH',
+    filter: 'ALL' | 'TODAY' | 'UPCOMING' = 'ALL',
     search?: string,
     page?: number,
     limit?: number,
@@ -45,11 +48,50 @@ export class TaskService {
       url: '/task',
       query: {
         'status': status,
-        'priority': priority,
+        'filter': filter,
         'search': search,
         'page': page,
         'limit': limit,
       },
+    });
+  }
+  /**
+   * @param id
+   * @returns GetTaskDetailResponseDto Get  task by id
+   * @throws ApiError
+   */
+  public taskControllerGetTask(
+    id: string,
+  ): CancelablePromise<GetTaskDetailResponseDto> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/task/{id}',
+      path: {
+        'id': id,
+      },
+      errors: {
+        404: `Task not found`,
+      },
+    });
+  }
+  /**
+   * @param id
+   * @param requestBody
+   * @returns UpdateTaskResponseDto Update Task
+   * @throws ApiError
+   */
+  public taskControllerUpdateTask(
+    id: string,
+    requestBody: UpdateTaskRequestDto,
+  ): CancelablePromise<UpdateTaskResponseDto> {
+    return this.httpRequest.request({
+      method: 'PATCH',
+      url: '/task/{id}',
+      path: {
+        'id': id,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 }

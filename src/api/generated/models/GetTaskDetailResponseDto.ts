@@ -2,16 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type GetTaskResponseDto = {
+export type GetTaskDetailResponseDto = {
   id: string;
   title: string;
   description: string;
-  status: GetTaskResponseDto.status;
+  status: GetTaskDetailResponseDto.status;
   dueDate: string;
-  createdAt: string;
-  updatedAt: string;
 };
-export namespace GetTaskResponseDto {
+export namespace GetTaskDetailResponseDto {
   export enum status {
     PENDING = 'PENDING',
     IN_PROGRESS = 'IN_PROGRESS',

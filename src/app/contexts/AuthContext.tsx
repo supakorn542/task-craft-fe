@@ -9,11 +9,11 @@ import {
 } from "react";
 
 import { apiClient } from "@/api";
-import { ApiError, UserEntity } from "@/api/generated";
+import { ApiError, UserDto } from "@/api/generated";
 import { useNotify } from "./NotificationContext";
 
 type AuthContextProps = {
-  user: UserEntity | null;
+  user: UserDto | null;
   isLoggedIn: boolean;
   authPending: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -24,7 +24,7 @@ type AuthContextProps = {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<UserEntity | null>(null);
+  const [user, setUser] = useState<UserDto | null>(null);
   const [authPending, setAuthPending] = useState(true);
   const notification = useNotify();
 

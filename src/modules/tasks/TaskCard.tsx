@@ -1,9 +1,10 @@
 import React from "react";
 import clsx from "clsx";
 import { Task } from "../../mock/mockData";
+import { GetTaskResponseDto } from "@/api/generated";
 
 type TaskCardProps = {
-  task: Task;
+  task: GetTaskResponseDto;
   onClick?: () => void;
 };
 
@@ -16,7 +17,7 @@ export default function TaskCard({ task, onClick }: TaskCardProps) {
       <p className="text-sm font-medium">{task.title}</p>
 
       <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
-        <span className="flex items-center gap-1">
+        {/* <span className="flex items-center gap-1">
           <span
             className={clsx(
               "inline-block h-2 w-2 rounded-full",
@@ -26,8 +27,8 @@ export default function TaskCard({ task, onClick }: TaskCardProps) {
             )}
           />
           {task.tag}
-        </span>
-        <span>{task.dueDate}</span>
+        </span> */}
+        <span>{task.dueDate ? new Date(task.dueDate).toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }) : "No due date"}</span>
       </div>
     </div>
   );

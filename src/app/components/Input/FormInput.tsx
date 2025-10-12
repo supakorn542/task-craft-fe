@@ -6,7 +6,7 @@ import {
   Path,
   RegisterOptions,
 } from "react-hook-form";
-import { Input, Form, InputProps } from "antd";
+import { Input, Form, InputProps, FormItemProps } from "antd";
 
 type FormInputProps<T extends FieldValues> = {
   name: Path<T>;
@@ -17,6 +17,7 @@ type FormInputProps<T extends FieldValues> = {
     "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
   >;
   type?: React.InputHTMLAttributes<HTMLInputElement>["type"];
+    formItemProps?: FormItemProps;
 } & InputProps;
 
 export function FormInput<T extends FieldValues>({
@@ -25,10 +26,11 @@ export function FormInput<T extends FieldValues>({
   label,
   rules,
   type = "text",
+  formItemProps,
   ...rest
 }: FormInputProps<T>) {
   return (
-    <Form.Item label={label}>
+    <Form.Item label={label} {...formItemProps}>
       <Controller
         name={name}
         control={control}
