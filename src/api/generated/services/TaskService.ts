@@ -33,6 +33,7 @@ export class TaskService {
    * @param search
    * @param page
    * @param limit
+   * @param tagId Filter tasks by a specific tag ID
    * @returns GetPaginatedTaskResponseDto Get all tasks of the user with optional filters and pagination
    * @throws ApiError
    */
@@ -42,6 +43,7 @@ export class TaskService {
     search?: string,
     page?: number,
     limit?: number,
+    tagId?: string,
   ): CancelablePromise<GetPaginatedTaskResponseDto> {
     return this.httpRequest.request({
       method: 'GET',
@@ -52,6 +54,7 @@ export class TaskService {
         'search': search,
         'page': page,
         'limit': limit,
+        'tagId': tagId,
       },
     });
   }

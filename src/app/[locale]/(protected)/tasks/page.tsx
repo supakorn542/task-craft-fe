@@ -13,6 +13,7 @@ import { FormInput } from "@/app/components/Input/FormInput";
 import { useForm, useWatch } from "react-hook-form";
 import { SearchOutlined } from "@ant-design/icons";
 import TaskModal from "@/modules/tasks/TaskModal";
+import { useSearchParams } from "next/navigation";
 
 type TaskForm = {
   search: string;
@@ -27,6 +28,10 @@ export default function Tasks() {
   const [task, setTask] = useState<GetTaskResponseDto[]>([]);
   const status = Object.values(GetTaskResponseDto.status);
   const [filter, setFilter] = useState<"All" | "Today" | "Upcoming">("All");
+
+  const searchParams = useSearchParams();
+  const tagId = searchParams.get("tagId");
+
   const { control } = useForm<TaskForm>({
     defaultValues: { search: "" },
   });
@@ -56,17 +61,19 @@ export default function Tasks() {
   };
 
   const handleCloseModal = () => {
-  setIsModalOpen(false);
-  setSelectedTask(null); 
-};
-
+    setIsModalOpen(false);
+    setSelectedTask(null);
+  };
 
   const getTasksData = async () => {
     try {
       const res = await apiClient.task.taskControllerGetTasks(
         undefined,
         filter.toUpperCase() as "ALL" | "TODAY" | "UPCOMING",
-        search || undefined
+        search || undefined,
+        undefined,
+        undefined,
+        tagId || undefined
       );
       if (res) {
         setTask(res.tasks);
@@ -80,7 +87,7 @@ export default function Tasks() {
 
   useEffect(() => {
     getTasksData();
-  }, [filter, search]);
+  }, [filter, search, tagId]);
 
   return (
     <div className="flex flex-col gap-2 py-4 pr-4 min-h-screen">
@@ -133,7 +140,6 @@ export default function Tasks() {
         ))}
       </div>
       {
-        /* <AddTaskModal open={isModalOpen} onClose={() => setIsModalOpen(false)} /> */
         <TaskModal
           open={isModalOpen}
           onClose={handleCloseModal}

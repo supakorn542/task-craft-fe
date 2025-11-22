@@ -19,6 +19,10 @@ export type CreateTaskRequestDto = {
    * Due date of the task in ISO string format
    */
   dueDate?: string | null;
+  /**
+   * Array of tag IDs or new tag names
+   */
+  tags?: Array<string>;
 };
 export namespace CreateTaskRequestDto {
   /**

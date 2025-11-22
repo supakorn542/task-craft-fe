@@ -10,6 +10,8 @@ import { ApiError } from "@/api/generated";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
+import TagList from "./TagList";
+import { Link } from "@/i18n/navigation";
 
 export default function Sidebar() {
   const notification = useNotify();
@@ -38,14 +40,15 @@ export default function Sidebar() {
             </div>
             <div className="flex flex-col gap-4">
               <MenuList />
+              <TagList />
             </div>
           </div>
           <div>
             <ul>
-              <li className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg">
+              <Link href="/settings" className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg">
                 <RiListSettingsLine />
                 <h3>Settings</h3>
-              </li>
+              </Link>
               <li
                 className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
                 onClick={() => handleLogout()}

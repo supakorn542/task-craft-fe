@@ -2,6 +2,7 @@ import { apiClient } from "@/api";
 import {
   ApiError,
   CreateTaskRequestDto,
+  GetTagListResponseDto,
   GetTaskDetailResponseDto,
   GetTaskResponseDto,
   UpdateTaskRequestDto,
@@ -14,7 +15,7 @@ import CustomModal from "@/app/components/Modals/CustomModal";
 import { SelectInput } from "@/app/components/Selects/SelectInput";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { Form } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type TaskModalProps = {
@@ -35,6 +36,8 @@ export default function TaskModal({
   const notification = useNotify();
   const isEditMode = !!taskToEdit;
 
+  const [tagList, setTagList] = useState<GetTagListResponseDto[]>([]);
+
   const statusOptions = Object.values(GetTaskResponseDto.status).map(
     (status) => ({
       label: status.replace("_", " "),
@@ -51,11 +54,31 @@ export default function TaskModal({
     },
   });
 
+  const getTagList = async () => {
+    try {
+      const res = await apiClient.tag.tagControllerGetTags();
+      setTagList(res);
+    } catch (e) {
+      if (e instanceof ApiError) {
+        notification.showError("Get tag list failed", e.body?.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      getTagList();
+    }
+  }, [open]);
+
   useEffect(() => {
     if (isEditMode && taskToEdit) {
+      const tagIds = taskToEdit.tags?.map((tag) => tag.id) || [];
+
       const formValues = {
         ...taskToEdit,
         dueDate: taskToEdit.dueDate || undefined,
+        tags: tagIds,
       };
       reset(formValues);
     } else {
@@ -64,6 +87,7 @@ export default function TaskModal({
         description: "",
         status: statusOptions[0].value,
         dueDate: undefined,
+        tags: [],
       });
     }
   }, [taskToEdit, open, reset]);
@@ -116,6 +140,19 @@ export default function TaskModal({
             name="description"
             control={control}
             label="Description"
+            rows={4}
+            style={{ resize: "none" }}
+          />
+        </div>
+        <div>
+          <SelectInput<TaskFormData>
+            name="tags"
+            control={control}
+            label="Tags"
+            mode="tags"
+            options={tagList.map((tag) => ({ label: tag.name, value: tag.id }))}
+            placeholder="Select or create tags"
+            tokenSeparators={[","]}
           />
         </div>
         <div>
@@ -126,6 +163,7 @@ export default function TaskModal({
             options={statusOptions}
           />
         </div>
+
         <div>
           <CustomDatePicker<TaskFormData>
             name="dueDate"

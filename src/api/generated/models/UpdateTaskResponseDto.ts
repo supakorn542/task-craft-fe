@@ -2,12 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { TagResponseDto } from './TagResponseDto';
 export type UpdateTaskResponseDto = {
   id: string;
   title: string;
   description?: string | null;
   status: UpdateTaskResponseDto.status;
   dueDate?: string;
+  tags: Array<TagResponseDto>;
   createdAt: string;
   updatedAt: string;
 };

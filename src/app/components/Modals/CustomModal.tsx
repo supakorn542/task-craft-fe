@@ -1,21 +1,11 @@
 "use client";
 
 import React from "react";
-import { Modal } from "antd";
+import { Modal, ModalProps } from "antd";
 
-export type CustomModalProps = {
-  open: boolean;
-  title?: React.ReactNode;
+type CustomModalProps = {
   onClose: () => void;
-  footer?: React.ReactNode;
-  width?: number | string;
-  children?: React.ReactNode;
-  destroyOnHidden?: boolean;
-  centered?: boolean;
-  closable?: boolean;
-  maskClosable?: boolean;
-  className?: string;
-};
+} & Omit<ModalProps, "onCancel" | "visible">;
 
 export default function CustomModal({
   open,
@@ -29,6 +19,7 @@ export default function CustomModal({
   closable = true,
   maskClosable = true,
   className,
+  ...rest
 }: CustomModalProps) {
   return (
     <Modal
@@ -42,6 +33,7 @@ export default function CustomModal({
       maskClosable={maskClosable}
       destroyOnHidden={destroyOnHidden}
       className={className}
+      {...rest}
     >
       {children}
     </Modal>
