@@ -6,6 +6,7 @@ import type { CreateTaskRequestDto } from '../models/CreateTaskRequestDto';
 import type { CreateTaskResponseDto } from '../models/CreateTaskResponseDto';
 import type { GetPaginatedTaskResponseDto } from '../models/GetPaginatedTaskResponseDto';
 import type { GetTaskDetailResponseDto } from '../models/GetTaskDetailResponseDto';
+import type { TaskResponseDto } from '../models/TaskResponseDto';
 import type { UpdateTaskRequestDto } from '../models/UpdateTaskRequestDto';
 import type { UpdateTaskResponseDto } from '../models/UpdateTaskResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -33,7 +34,9 @@ export class TaskService {
    * @param search
    * @param page
    * @param limit
-   * @param tagId Filter tasks by a specific tag ID
+   * @param tagIds Filter tasks by tag IDs
+   * @param sortBy
+   * @param order
    * @returns GetPaginatedTaskResponseDto Get all tasks of the user with optional filters and pagination
    * @throws ApiError
    */
@@ -43,7 +46,9 @@ export class TaskService {
     search?: string,
     page?: number,
     limit?: number,
-    tagId?: string,
+    tagIds?: Array<string>,
+    sortBy: 'createdAt' | 'dueDate' = 'createdAt',
+    order: 'asc' | 'desc' = 'desc',
   ): CancelablePromise<GetPaginatedTaskResponseDto> {
     return this.httpRequest.request({
       method: 'GET',
@@ -54,7 +59,9 @@ export class TaskService {
         'search': search,
         'page': page,
         'limit': limit,
-        'tagId': tagId,
+        'tagIds': tagIds,
+        'sortBy': sortBy,
+        'order': order,
       },
     });
   }
@@ -95,6 +102,22 @@ export class TaskService {
       },
       body: requestBody,
       mediaType: 'application/json',
+    });
+  }
+  /**
+   * @param id
+   * @returns TaskResponseDto Delete Task
+   * @throws ApiError
+   */
+  public taskControllerDeleteTask(
+    id: string,
+  ): CancelablePromise<TaskResponseDto> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/task/{id}',
+      path: {
+        'id': id,
+      },
     });
   }
 }

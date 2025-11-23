@@ -23,6 +23,7 @@ export { GetTaskResponseDto } from './models/GetTaskResponseDto';
 export type { LoginDto } from './models/LoginDto';
 export type { TagCountDto } from './models/TagCountDto';
 export type { TagResponseDto } from './models/TagResponseDto';
+export { TaskResponseDto } from './models/TaskResponseDto';
 export type { UpdateTagRequestDto } from './models/UpdateTagRequestDto';
 export type { UpdateTagResponseDto } from './models/UpdateTagResponseDto';
 export { UpdateTaskRequestDto } from './models/UpdateTaskRequestDto';

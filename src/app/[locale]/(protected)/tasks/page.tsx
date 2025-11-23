@@ -6,7 +6,11 @@ import TaskFilter from "../../../components/Tabs/TaskFilter";
 import TaskCard from "../../../../modules/tasks/TaskCard";
 import { useTranslations } from "next-intl";
 import { apiClient } from "@/api";
-import { ApiError, GetTaskDetailResponseDto } from "@/api/generated";
+import {
+  ApiError,
+  GetTagListResponseDto,
+  GetTaskDetailResponseDto,
+} from "@/api/generated";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { GetTaskResponseDto } from "@/api/generated";
 import { FormInput } from "@/app/components/Input/FormInput";
@@ -14,6 +18,9 @@ import { useForm, useWatch } from "react-hook-form";
 import { SearchOutlined } from "@ant-design/icons";
 import TaskModal from "@/modules/tasks/TaskModal";
 import { useSearchParams } from "next/navigation";
+import { Select } from "antd";
+import { SortAscendingOutlined, FilterOutlined } from "@ant-design/icons";
+import TaskDeleteModal from "@/modules/tasks/TaskDeleteModal";
 
 type TaskForm = {
   search: string;
@@ -29,14 +36,48 @@ export default function Tasks() {
   const status = Object.values(GetTaskResponseDto.status);
   const [filter, setFilter] = useState<"All" | "Today" | "Upcoming">("All");
 
-  const searchParams = useSearchParams();
-  const tagId = searchParams.get("tagId");
-
   const { control } = useForm<TaskForm>({
     defaultValues: { search: "" },
   });
 
   const search = useWatch({ control, name: "search" });
+
+  const searchParams = useSearchParams();
+  const tagId = searchParams.get("tagId");
+
+  const [sortBy, setSortBy] = useState<"createdAt" | "dueDate">("createdAt");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [filterTags, setFilterTags] = useState<string[]>(tagId ? [tagId] : []);
+  const [tagList, setTagList] = useState<GetTagListResponseDto[]>([]);
+
+  const [deletingTask, setDeletingTask] = useState<GetTaskResponseDto | null>(
+    null
+  );
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // --- Logic การลบ Task ---
+
+  const handleDeleteTask = (id: string) => {
+    const taskToDelete = task.find((t) => t.id === id);
+    if (taskToDelete) setDeletingTask(taskToDelete);
+  };
+
+  const handleDeleteTaskConfirm = async () => {
+    if (!deletingTask) return;
+    setIsDeleting(true);
+    try {
+      await apiClient.task.taskControllerDeleteTask(deletingTask.id);
+      notification.showSuccess(`Task deleted successfully`);
+      setDeletingTask(null);
+      getTasksData();
+    } catch (e) {
+      if (e instanceof ApiError) {
+        notification.showError("Failed to delete task", e.body?.message);
+      }
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const handleOpenAddTaskModal = () => {
     setSelectedTask(null);
@@ -73,7 +114,9 @@ export default function Tasks() {
         search || undefined,
         undefined,
         undefined,
-        tagId || undefined
+        filterTags,
+        sortBy,
+        sortOrder
       );
       if (res) {
         setTask(res.tasks);
@@ -85,22 +128,76 @@ export default function Tasks() {
     }
   };
 
+  const getTagsData = async () => {
+    try {
+      const res = await apiClient.tag.tagControllerGetTags();
+      if (res) {
+        setTagList(res);
+      }
+    } catch (e) {
+      if (e instanceof ApiError) {
+        notification.showError("Get Tag Data Failed", e.body?.message);
+      }
+    }
+  };
+
   useEffect(() => {
     getTasksData();
-  }, [filter, search, tagId]);
+  }, [filter, search, sortBy, sortOrder, filterTags]);
+
+  useEffect(() => {
+    getTagsData();
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 py-4 pr-4 min-h-screen">
       <PageHeader text={t("TasksPage.title")} />
       <TaskFilter active={filter} onChange={setFilter} />
-      <FormInput
-        name="search"
-        control={control}
-        formItemProps={{ style: { marginBottom: 0 } }}
-        placeholder="Search"
-        prefix={<SearchOutlined style={{ color: "grey" }} />}
-        allowClear
-      />
+      <div className="flex w-full flex-col md:flex-row gap-3 items-center justify-between">
+        <div className="w-full">
+          <FormInput
+            name="search"
+            control={control}
+            formItemProps={{ style: { marginBottom: 0 } }}
+            placeholder="Search tasks..."
+            prefix={<SearchOutlined style={{ color: "grey" }} />}
+            allowClear
+            className="w-full"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Select
+            mode="multiple"
+            placeholder="Filter by Tags"
+            style={{ minWidth: 150 }}
+            maxTagCount="responsive"
+            onChange={setFilterTags}
+            options={tagList.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+            }))}
+            suffixIcon={<FilterOutlined />}
+          />
+
+          <Select
+            defaultValue="createdAt_desc"
+            style={{ width: 160 }}
+            onChange={(value) => {
+              const [field, order] = value.split("_");
+              setSortBy(field as any);
+              setSortOrder(order as any);
+            }}
+            options={[
+              { label: "Newest Created", value: "createdAt_desc" },
+              { label: "Oldest Created", value: "createdAt_asc" },
+              { label: "Due Date (Near)", value: "dueDate_asc" },
+              { label: "Due Date (Far)", value: "dueDate_desc" },
+            ]}
+            suffixIcon={<SortAscendingOutlined />}
+          />
+        </div>
+      </div>
+
       <div className="flex flex-1 justify-between overflow-x-auto">
         {status.map((col) => (
           <div
@@ -123,6 +220,7 @@ export default function Tasks() {
                     key={task.id}
                     task={task}
                     onClick={() => handleOpenEditModal(task.id)}
+                    onDelete={handleDeleteTask}
                   />
                 ))}
               {task.filter((t) => t.status === col).length === 0 && (
@@ -147,6 +245,13 @@ export default function Tasks() {
           taskToEdit={selectedTask}
         />
       }
+      <TaskDeleteModal
+        open={!!deletingTask}
+        title={deletingTask?.title}
+        onClose={() => setDeletingTask(null)}
+        onConfirm={handleDeleteTaskConfirm}
+        loading={isDeleting}
+      />
     </div>
   );
 }
