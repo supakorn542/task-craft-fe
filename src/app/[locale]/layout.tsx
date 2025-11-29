@@ -10,6 +10,7 @@ import { routing } from "@/i18n/routing";
 import { NotificationProvider } from "../contexts/NotificationContext";
 import { AuthProvider } from "@/app/contexts/AuthContext";
 import { ConfigProvider } from "antd";
+import TagProvider from "../contexts/TagContext";
 
 type Props = {
   children: ReactNode;
@@ -46,7 +47,9 @@ export default async function RootLayout({ children, params }: Props) {
       <body className={`${lexendDeca.className} antialiased`}>
         <NextIntlClientProvider>
           <NotificationProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <TagProvider>{children}</TagProvider>
+            </AuthProvider>
           </NotificationProvider>
         </NextIntlClientProvider>
       </body>

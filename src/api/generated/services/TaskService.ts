@@ -41,7 +41,7 @@ export class TaskService {
    * @throws ApiError
    */
   public taskControllerGetTasks(
-    status?: 'PENDING' | 'IN_PROGRESS' | 'DONE',
+    status?: 'TO_DO' | 'IN_PROGRESS' | 'DONE',
     filter: 'ALL' | 'TODAY' | 'UPCOMING' = 'ALL',
     search?: string,
     page?: number,

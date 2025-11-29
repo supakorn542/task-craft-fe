@@ -29,7 +29,7 @@ export namespace UpdateTaskRequestDto {
    * Current status of the task
    */
   export enum status {
-    PENDING = 'PENDING',
+    TO_DO = 'TO_DO',
     IN_PROGRESS = 'IN_PROGRESS',
     DONE = 'DONE',
   }

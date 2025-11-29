@@ -8,15 +8,15 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { apiClient } from "@/api";
 import { ApiError } from "@/api/generated";
 import { useNotify } from "@/app/contexts/NotificationContext";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
 import TagList from "./TagList";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 export default function Sidebar() {
   const notification = useNotify();
   const { logout } = useAuth();
   const router = useRouter();
+
   const handleLogout = async () => {
     try {
       await logout();

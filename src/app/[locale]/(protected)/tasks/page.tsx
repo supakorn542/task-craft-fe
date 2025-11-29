@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import PageHeader from "../../../components/PageHeader";
 import TaskFilter from "../../../components/Tabs/TaskFilter";
-import TaskCard from "../../../../modules/tasks/TaskCard";
+import TaskCard, { TaskCardOverlay } from "../../../../modules/tasks/TaskCard";
 import { useTranslations } from "next-intl";
 import { apiClient } from "@/api";
 import {
@@ -21,6 +21,24 @@ import { useSearchParams } from "next/navigation";
 import { Select } from "antd";
 import { SortAscendingOutlined, FilterOutlined } from "@ant-design/icons";
 import TaskDeleteModal from "@/modules/tasks/TaskDeleteModal";
+import { TaskStatus } from "@/types/task";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCorners,
+  TouchSensor,
+  KeyboardSensor,
+  DragOverlay,
+  defaultDropAnimationSideEffects,
+  DropAnimation,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import { useDroppable } from "@dnd-kit/core";
+import TaskColumn from "@/modules/tasks/TaskColumn";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 type TaskForm = {
   search: string;
@@ -30,11 +48,17 @@ export default function Tasks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] =
     useState<GetTaskDetailResponseDto | null>(null);
+
   const t = useTranslations();
   const notification = useNotify();
-  const [task, setTask] = useState<GetTaskResponseDto[]>([]);
-  const status = Object.values(GetTaskResponseDto.status);
+
+  const [taskList, setTaskList] = useState<GetTaskResponseDto[]>([]);
+  const status = Object.values(TaskStatus);
   const [filter, setFilter] = useState<"All" | "Today" | "Upcoming">("All");
+
+  const [initialStatus, setInitialStatus] = useState<TaskStatus | undefined>(
+    undefined
+  );
 
   const { control } = useForm<TaskForm>({
     defaultValues: { search: "" },
@@ -43,11 +67,13 @@ export default function Tasks() {
   const search = useWatch({ control, name: "search" });
 
   const searchParams = useSearchParams();
-  const tagId = searchParams.get("tagId");
+  const urlTagId = searchParams.get("tagId");
 
   const [sortBy, setSortBy] = useState<"createdAt" | "dueDate">("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  const [filterTags, setFilterTags] = useState<string[]>(tagId ? [tagId] : []);
+  const [filterTags, setFilterTags] = useState<string[]>(
+    urlTagId ? [urlTagId] : []
+  );
   const [tagList, setTagList] = useState<GetTagListResponseDto[]>([]);
 
   const [deletingTask, setDeletingTask] = useState<GetTaskResponseDto | null>(
@@ -55,10 +81,108 @@ export default function Tasks() {
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const [activeTask, setActiveTask] = useState<GetTaskResponseDto | null>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        tolerance: 5,
+        delay: 250,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // --- Logic การ Drag & Drop ---
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+
+    const task = taskList.find((t) => t.id === active.id);
+
+    if (task) {
+      setActiveTask(task);
+    }
+  };
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    setActiveTask(null);
+    const { active, over } = event;
+
+    if (!over) {
+      return;
+    }
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    const activeTask = taskList.find((t) => t.id === activeId);
+    if (!activeTask) return;
+
+    let newStatus: TaskStatus;
+
+    const isOverColumn = status.includes(overId as TaskStatus);
+
+    if (isOverColumn) {
+      newStatus = overId as TaskStatus;
+    } else {
+      const overTask = taskList.find((t) => t.id === overId);
+      if (!overTask) return;
+      newStatus = overTask.status;
+    }
+
+    if (activeTask.status === newStatus) {
+      return;
+    }
+
+    const updatedTasks = taskList.map((t) => {
+      if (t.id === activeId) {
+        return { ...t, status: newStatus };
+      }
+      return t;
+    });
+    setTaskList(updatedTasks);
+
+    try {
+      const updatedStatusTask = await apiClient.task.taskControllerUpdateTask(
+        activeId,
+        {
+          status: newStatus,
+        }
+      );
+
+      setTaskList((prevList) =>
+        prevList.map((t) =>
+          t.id === activeId ? (updatedStatusTask as GetTaskResponseDto) : t
+        )
+      );
+      // getTasksData();
+    } catch (e) {
+      notification.showError("Failed to move task");
+      getTasksData();
+    }
+  };
+
+  const dropAnimation: DropAnimation = {
+    sideEffects: defaultDropAnimationSideEffects({
+      styles: {
+        active: {
+          opacity: "0.5",
+        },
+      },
+    }),
+  };
+
   // --- Logic การลบ Task ---
 
   const handleDeleteTask = (id: string) => {
-    const taskToDelete = task.find((t) => t.id === id);
+    const taskToDelete = taskList.find((t) => t.id === id);
     if (taskToDelete) setDeletingTask(taskToDelete);
   };
 
@@ -79,8 +203,9 @@ export default function Tasks() {
     }
   };
 
-  const handleOpenAddTaskModal = () => {
+  const handleOpenAddTaskModal = (status?: TaskStatus) => {
     setSelectedTask(null);
+    setInitialStatus(status);
     setIsModalOpen(true);
   };
 
@@ -104,6 +229,7 @@ export default function Tasks() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedTask(null);
+    setInitialStatus(undefined);
   };
 
   const getTasksData = async () => {
@@ -119,7 +245,7 @@ export default function Tasks() {
         sortOrder
       );
       if (res) {
-        setTask(res.tasks);
+        setTaskList(res.tasks);
       }
     } catch (e) {
       if (e instanceof ApiError) {
@@ -140,6 +266,14 @@ export default function Tasks() {
       }
     }
   };
+
+  useEffect(() => {
+    if (urlTagId) {
+      setFilterTags([urlTagId]);
+    } else {
+      setFilterTags([]);
+    }
+  }, [urlTagId]);
 
   useEffect(() => {
     getTasksData();
@@ -171,6 +305,7 @@ export default function Tasks() {
             placeholder="Filter by Tags"
             style={{ minWidth: 150 }}
             maxTagCount="responsive"
+            value={filterTags}
             onChange={setFilterTags}
             options={tagList.map((tag) => ({
               label: tag.name,
@@ -199,50 +334,42 @@ export default function Tasks() {
       </div>
 
       <div className="flex flex-1 justify-between overflow-x-auto">
-        {status.map((col) => (
-          <div
-            key={col}
-            className="flex flex-col w-full p-2 overflow-auto max-h-[70vh] scrollbar-none"
-          >
-            <h3 className="mb-3 flex items-center gap-2 text-md font-semibold uppercase tracking-wide">
-              {col === "PENDING"
-                ? "To Do"
-                : col === "IN_PROGRESS"
-                ? "In Progress"
-                : "Done"}
-              <span className="text-xs text-gray-400"></span>
-            </h3>
-            <div className="flex flex-col gap-3">
-              {task
-                .filter((task) => task.status === col)
-                .map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    onClick={() => handleOpenEditModal(task.id)}
-                    onDelete={handleDeleteTask}
-                  />
-                ))}
-              {task.filter((t) => t.status === col).length === 0 && (
-                <div className="text-xs text-gray-400 italic">No tasks</div>
-              )}
-
-              <button
-                onClick={handleOpenAddTaskModal}
-                className="w-full cursor-pointer rounded-md border border-dashed border-gray-300 py-2 text-center text-sm text-gray-500 hover:bg-gray-100"
-              >
-                + Add Task
-              </button>
-            </div>
-          </div>
-        ))}
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCorners}
+        >
+          {status.map((col) => (
+            <TaskColumn
+              key={col}
+              status={col as TaskStatus}
+              title={
+                col === "TO_DO"
+                  ? "To Do"
+                  : col === "IN_PROGRESS"
+                  ? "In Progress"
+                  : "Done"
+              }
+              tasks={taskList.filter((t) => t.status === col)}
+              onAddTask={() => handleOpenAddTaskModal()}
+              onEditTask={(id) => handleOpenEditModal(id)}
+              onDeleteTask={handleDeleteTask}
+            />
+          ))}
+          <DragOverlay dropAnimation={dropAnimation}>
+            {activeTask ? <TaskCardOverlay task={activeTask} /> : null}
+          </DragOverlay>
+        </DndContext>
       </div>
+
       {
         <TaskModal
           open={isModalOpen}
           onClose={handleCloseModal}
           onSuccess={handleFormSuccess}
           taskToEdit={selectedTask}
+          initialStatus={initialStatus}
         />
       }
       <TaskDeleteModal

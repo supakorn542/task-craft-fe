@@ -1,51 +1,51 @@
 "use client";
 
 import { ApiError, GetTagListResponseDto } from "@/api/generated";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
+
 import React, { useEffect, useState } from "react";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { apiClient } from "@/api";
 import clsx from "clsx";
+import { useTags } from "@/app/contexts/TagContext";
 
 export default function TagList() {
-  const [tags, setTags] = useState<GetTagListResponseDto[]>([]);
-  const notification = useNotify();
+  // const [tags, setTags] = useState<GetTagListResponseDto[]>([]);
+  // const notification = useNotify();
   const router = useRouter();
-  const pathName = usePathname();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const selectedTag = searchParams.get("tagId");
+  const selectedTagId = searchParams.get("tagId");
 
-  useEffect(() => {
-    const getUserTags = async () => {
-      try {
-        const res = await apiClient.tag.tagControllerGetTags();
-        setTags(res);
-      } catch (e) {
-        if (e instanceof ApiError) {
-          notification.showError("Get user tags failed", e.body?.message);
-        }
-      }
-    };
+  const { tags } = useTags();
 
-    getUserTags();
-  }, []);
+  // useEffect(() => {
+  //   const getUserTags = async () => {
+  //     try {
+  //       const res = await apiClient.tag.tagControllerGetTags();
+  //       setTags(res);
+  //     } catch (e) {
+  //       if (e instanceof ApiError) {
+  //         notification.showError("Get user tags failed", e.body?.message);
+  //       }
+  //     }
+  //   };
+
+  //   getUserTags();
+  // }, []);
 
   const handleSelectTag = (tagId: string) => {
-    const currentParams = new URLSearchParams(
-      Array.from(searchParams.entries())
-    );
+    const isOnTaskPage = pathname === "/tasks";
+    const isSameTag = tagId === selectedTagId;
 
-    if (tagId === selectedTag) {
-      currentParams.delete("tagId");
-    } else {
-      currentParams.set("tagId", tagId);
+    if (isOnTaskPage && isSameTag) {
+      router.push("/tasks");
+      return;
     }
 
-    const search = currentParams.toString();
-    const query = search ? `?${search}` : ``;
-
-    router.push(`${pathName}${query}`);
+    router.push(`/tasks?tagId=${tagId}`);
   };
 
   return (
@@ -57,10 +57,10 @@ export default function TagList() {
         {tags.map((tag) => (
           <li
             key={tag.id}
-            onClick={() => handleSelectTag(tag.id)} 
+            onClick={() => handleSelectTag(tag.id)}
             className={clsx(
               "flex items-center gap-2 text-text-secondary text-sm cursor-pointer p-2 rounded-lg",
-              selectedTag === tag.id
+              selectedTagId === tag.id
                 ? "bg-brand-hover font-semibold"
                 : "hover:bg-brand-hover"
             )}

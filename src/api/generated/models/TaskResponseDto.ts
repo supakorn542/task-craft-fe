@@ -19,7 +19,7 @@ export type TaskResponseDto = {
 };
 export namespace TaskResponseDto {
   export enum status {
-    PENDING = 'PENDING',
+    TO_DO = 'TO_DO',
     IN_PROGRESS = 'IN_PROGRESS',
     DONE = 'DONE',
   }

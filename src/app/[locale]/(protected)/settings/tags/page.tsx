@@ -19,6 +19,7 @@ import CustomColorPicker from "@/app/components/ColorPickers/CustomColorPicker";
 import { useForm } from "react-hook-form";
 import { FormInput } from "@/app/components/Input/FormInput";
 import TagDeleteModal from "@/modules/tags/TagDeleteModal";
+import { useTags } from "@/app/contexts/TagContext";
 
 type CreateTagForm = {
   name: string;
@@ -27,6 +28,9 @@ type CreateTagForm = {
 
 export default function ManageTagsPage() {
   const notification = useNotify();
+
+  const { refreshTags } = useTags();
+
   const [tags, setTags] = useState<GetTagListResponseDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -76,6 +80,7 @@ export default function ManageTagsPage() {
       reset();
       setIsCreating(false);
       getTagData();
+      refreshTags();
     } catch (e) {
       if (e instanceof ApiError) {
         notification.showError("Failed to create tag", e.body?.message);
@@ -98,6 +103,7 @@ export default function ManageTagsPage() {
       );
       setDeletingTag(null);
       getTagData();
+      refreshTags();
     } catch (e) {
       if (e instanceof ApiError) {
         notification.showError("Failed to delete tag", e.body?.message);

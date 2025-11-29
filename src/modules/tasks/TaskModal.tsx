@@ -6,6 +6,7 @@ import {
   GetTaskDetailResponseDto,
   GetTaskResponseDto,
   UpdateTaskRequestDto,
+  TaskResponseDto,
 } from "@/api/generated";
 import { CustomButton } from "@/app/components/Buttons/CustomButton";
 import { CustomDatePicker } from "@/app/components/DatePickers/CustomDatePicker";
@@ -17,12 +18,15 @@ import { useNotify } from "@/app/contexts/NotificationContext";
 import { Form } from "antd";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { TaskStatus } from "@/types/task";
+import { useTags } from "@/app/contexts/TagContext";
 
 type TaskModalProps = {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
   taskToEdit?: GetTaskDetailResponseDto | null;
+  initialStatus?: TaskStatus;
 };
 
 type TaskFormData = CreateTaskRequestDto | UpdateTaskRequestDto;
@@ -32,24 +36,25 @@ export default function TaskModal({
   onClose,
   onSuccess,
   taskToEdit,
+  initialStatus,
 }: TaskModalProps) {
   const notification = useNotify();
   const isEditMode = !!taskToEdit;
 
+  const { refreshTags } = useTags();
+
   const [tagList, setTagList] = useState<GetTagListResponseDto[]>([]);
 
-  const statusOptions = Object.values(GetTaskResponseDto.status).map(
-    (status) => ({
-      label: status.replace("_", " "),
-      value: status,
-    })
-  );
+  const statusOptions = Object.values(TaskStatus).map((status) => ({
+    label: status.replace("_", " "),
+    value: status,
+  }));
 
   const { control, handleSubmit, reset } = useForm<TaskFormData>({
     defaultValues: {
       title: "",
       description: "",
-      status: statusOptions[0].value,
+      status: initialStatus || statusOptions[0].value,
       dueDate: undefined,
     },
   });
@@ -85,12 +90,12 @@ export default function TaskModal({
       reset({
         title: "",
         description: "",
-        status: statusOptions[0].value,
+        status: initialStatus || statusOptions[0].value,
         dueDate: undefined,
         tags: [],
       });
     }
-  }, [taskToEdit, open, reset]);
+  }, [taskToEdit, open, reset, initialStatus]);
 
   const handleFormSubmit = async (data: TaskFormData) => {
     try {
@@ -106,6 +111,8 @@ export default function TaskModal({
         );
         notification.showSuccess("Task created successfully");
       }
+
+      await refreshTags();
       onSuccess();
       onClose();
     } catch (e) {
