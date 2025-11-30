@@ -37,6 +37,8 @@ export class TaskService {
    * @param tagIds Filter tasks by tag IDs
    * @param sortBy
    * @param order
+   * @param startDate
+   * @param endDate
    * @returns GetPaginatedTaskResponseDto Get all tasks of the user with optional filters and pagination
    * @throws ApiError
    */
@@ -49,6 +51,8 @@ export class TaskService {
     tagIds?: Array<string>,
     sortBy: 'createdAt' | 'dueDate' = 'createdAt',
     order: 'asc' | 'desc' = 'desc',
+    startDate?: string,
+    endDate?: string,
   ): CancelablePromise<GetPaginatedTaskResponseDto> {
     return this.httpRequest.request({
       method: 'GET',
@@ -62,6 +66,8 @@ export class TaskService {
         'tagIds': tagIds,
         'sortBy': sortBy,
         'order': order,
+        'startDate': startDate,
+        'endDate': endDate,
       },
     });
   }

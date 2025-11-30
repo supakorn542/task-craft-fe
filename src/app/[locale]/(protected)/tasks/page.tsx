@@ -363,15 +363,14 @@ export default function Tasks() {
         </DndContext>
       </div>
 
-      {
-        <TaskModal
-          open={isModalOpen}
-          onClose={handleCloseModal}
-          onSuccess={handleFormSuccess}
-          taskToEdit={selectedTask}
-          initialStatus={initialStatus}
-        />
-      }
+      <TaskModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        onSuccess={handleFormSuccess}
+        taskToEdit={selectedTask}
+        initialStatus={initialStatus}
+      />
+
       <TaskDeleteModal
         open={!!deletingTask}
         title={deletingTask?.title}

@@ -27,7 +27,7 @@ export default function MenuList() {
           <h3>Tasks</h3>
         </Link>
         <Link
-          href="/"
+          href="/calendar"
           className="flex items-center gap-2 text-text-secondary text-sm cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
         >
           <FaRegCalendarAlt />

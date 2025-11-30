@@ -27,6 +27,7 @@ type TaskModalProps = {
   onSuccess: () => void;
   taskToEdit?: GetTaskDetailResponseDto | null;
   initialStatus?: TaskStatus;
+  initialDate?: string;
 };
 
 type TaskFormData = CreateTaskRequestDto | UpdateTaskRequestDto;
@@ -37,6 +38,7 @@ export default function TaskModal({
   onSuccess,
   taskToEdit,
   initialStatus,
+  initialDate,
 }: TaskModalProps) {
   const notification = useNotify();
   const isEditMode = !!taskToEdit;
@@ -55,7 +57,7 @@ export default function TaskModal({
       title: "",
       description: "",
       status: initialStatus || statusOptions[0].value,
-      dueDate: undefined,
+      dueDate: initialDate || undefined,
     },
   });
 
@@ -91,11 +93,11 @@ export default function TaskModal({
         title: "",
         description: "",
         status: initialStatus || statusOptions[0].value,
-        dueDate: undefined,
+        dueDate: initialDate || undefined,
         tags: [],
       });
     }
-  }, [taskToEdit, open, reset, initialStatus]);
+  }, [taskToEdit, open, reset, initialStatus, initialDate]);
 
   const handleFormSubmit = async (data: TaskFormData) => {
     try {
