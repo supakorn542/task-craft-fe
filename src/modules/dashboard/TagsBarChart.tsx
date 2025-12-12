@@ -1,0 +1,61 @@
+import { DashboardBarChartResponseDto } from "@/api/generated";
+import React from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
+
+type TagsBarChartProps = {
+  data: DashboardBarChartResponseDto[];
+  loading?: boolean;
+};
+
+export default function TagsBarChart({ data }: TagsBarChartProps) {
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="flex h-full items-center justify-center text-gray-400">
+        No Data
+      </div>
+    );
+  }
+
+  return (
+    <ResponsiveContainer width="100%" height="90%">
+      <BarChart data={data}>
+        <CartesianGrid strokeDasharray="3" vertical={false} />
+
+        <XAxis
+          dataKey="tagName"
+          tick={{ fontSize: 12 }}
+          axisLine={false}
+          tickLine={false}
+        />
+
+        <YAxis allowDecimals={false} axisLine={false} tickLine={false} />
+
+        <Tooltip
+          cursor={{ fill: "transparent" }}
+          formatter={(value: number) => [`${value} Tasks`, "Count"]}
+          contentStyle={{
+            borderRadius: "8px",
+            border: "none",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        />
+
+        <Bar dataKey="taskCount" radius={[4, 4, 0, 0]}>
+          {data.map((item, index) => (
+            <Cell key={`cell-${index}`} fill={item.color} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}

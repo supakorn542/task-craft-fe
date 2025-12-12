@@ -16,6 +16,10 @@ export type { CreateTagResponseDto } from './models/CreateTagResponseDto';
 export { CreateTaskRequestDto } from './models/CreateTaskRequestDto';
 export { CreateTaskResponseDto } from './models/CreateTaskResponseDto';
 export type { CreateUserDto } from './models/CreateUserDto';
+export type { DashboardBarChartResponseDto } from './models/DashboardBarChartResponseDto';
+export type { DashboardPieChartResponseDto } from './models/DashboardPieChartResponseDto';
+export type { DashboardSummaryResponseDto } from './models/DashboardSummaryResponseDto';
+export type { DashboardTrendResponseDto } from './models/DashboardTrendResponseDto';
 export type { GetPaginatedTaskResponseDto } from './models/GetPaginatedTaskResponseDto';
 export type { GetTagListResponseDto } from './models/GetTagListResponseDto';
 export { GetTaskDetailResponseDto } from './models/GetTaskDetailResponseDto';
@@ -32,6 +36,7 @@ export type { UserDto } from './models/UserDto';
 
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';
+export { DashboardService } from './services/DashboardService';
 export { TagService } from './services/TagService';
 export { TaskService } from './services/TaskService';
 export { UserService } from './services/UserService';
