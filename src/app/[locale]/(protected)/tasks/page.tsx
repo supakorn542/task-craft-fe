@@ -39,6 +39,7 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 import TaskColumn from "@/modules/tasks/TaskColumn";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import dayjs from "dayjs";
 
 type TaskForm = {
   search: string;
@@ -234,15 +235,27 @@ export default function Tasks() {
 
   const getTasksData = async () => {
     try {
+      let startDate: string | undefined;
+      let endDate: string | undefined;
+
+      if (filter === "Today") {
+        startDate = dayjs().startOf("day").toISOString();
+        endDate = dayjs().endOf("day").toISOString();
+      } else if (filter === "Upcoming") {
+        startDate = dayjs().add(1, "day").startOf("day").toISOString();
+        endDate = undefined;
+      }
+
       const res = await apiClient.task.taskControllerGetTasks(
         undefined,
-        filter.toUpperCase() as "ALL" | "TODAY" | "UPCOMING",
         search || undefined,
         undefined,
         undefined,
         filterTags,
         sortBy,
-        sortOrder
+        sortOrder,
+        startDate,
+        endDate
       );
       if (res) {
         setTaskList(res.tasks);
@@ -352,7 +365,7 @@ export default function Tasks() {
                   : "Done"
               }
               tasks={taskList.filter((t) => t.status === col)}
-              onAddTask={() => handleOpenAddTaskModal()}
+              onAddTask={() => handleOpenAddTaskModal(col as TaskStatus)}
               onEditTask={(id) => handleOpenEditModal(id)}
               onDeleteTask={handleDeleteTask}
             />

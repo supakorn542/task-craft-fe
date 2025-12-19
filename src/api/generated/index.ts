@@ -11,6 +11,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AuthEntity } from './models/AuthEntity';
+export type { ChangePasswordDto } from './models/ChangePasswordDto';
 export type { CreateTagRequestDto } from './models/CreateTagRequestDto';
 export type { CreateTagResponseDto } from './models/CreateTagResponseDto';
 export { CreateTaskRequestDto } from './models/CreateTaskRequestDto';
@@ -28,6 +29,7 @@ export type { LoginDto } from './models/LoginDto';
 export type { TagCountDto } from './models/TagCountDto';
 export type { TagResponseDto } from './models/TagResponseDto';
 export { TaskResponseDto } from './models/TaskResponseDto';
+export type { UpdateProfileDto } from './models/UpdateProfileDto';
 export type { UpdateTagRequestDto } from './models/UpdateTagRequestDto';
 export type { UpdateTagResponseDto } from './models/UpdateTagResponseDto';
 export { UpdateTaskRequestDto } from './models/UpdateTaskRequestDto';

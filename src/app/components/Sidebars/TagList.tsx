@@ -59,7 +59,7 @@ export default function TagList() {
             key={tag.id}
             onClick={() => handleSelectTag(tag.id)}
             className={clsx(
-              "flex items-center gap-2 text-text-secondary text-sm cursor-pointer p-2 rounded-lg",
+              "flex items-center gap-2 text-text-secondary text-sm cursor-pointer p-2 rounded-lg transition-colors",
               selectedTagId === tag.id
                 ? "bg-brand-hover font-semibold"
                 : "hover:bg-brand-hover"

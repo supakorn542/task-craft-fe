@@ -15,22 +15,16 @@ export default function SettingsPage() {
 
   const menuItems = [
     {
-      href: "/settings/profile",
+      href: "/settings/account",
       icon: <RiUserLine className="text-xl" />,
-      title: "Profile",
-      description: "Profile description",
+      title: "Account",
+      description: "Manage your password and account security.",
     },
     {
       href: "/settings/tags",
       icon: <RiPriceTag3Line className="text-xl" />,
       title: "Manage Tags",
       description: "Organize, edit, and delete your tags.",
-    },
-    {
-      href: "/settings/notifications",
-      icon: <RiNotification3Line className="text-xl" />,
-      title: "Notification",
-      description: "Notifications description",
     },
   ];
 

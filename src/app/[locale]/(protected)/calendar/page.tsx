@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Badge, Calendar } from "antd";
+import { Badge, Calendar, ConfigProvider } from "antd";
 import type { BadgeProps, CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 import PageHeader from "@/app/components/PageHeader";
@@ -63,7 +63,6 @@ export default function TaskCalendar() {
   const getTaskList = async () => {
     try {
       const res = await apiClient.task.taskControllerGetTasks(
-        undefined,
         undefined,
         undefined,
         undefined,
@@ -185,12 +184,23 @@ export default function TaskCalendar() {
         <div className="flex-shrink-0">
           <PageHeader text="Calendar" />
         </div>
-        <div className="flex-1 overflow-y-auto bg-white rounded-xl shadow-sm p-4 scrollbar-thin">
-          <Calendar
-            onSelect={handleOpenAddModal}
-            onPanelChange={onPanelChange}
-            cellRender={cellRender}
-          />
+        <div className="flex-1 overflow-y-auto bg-bg-base rounded-xl shadow-xl p-6 scrollbar-thin border border-gray-100">
+          <ConfigProvider
+            theme={{
+              components: {
+                Calendar: {
+                  fullBg: "transparent",
+                  itemActiveBg: "#FEF3C7",
+                },
+              },
+            }}
+          >
+            <Calendar
+              onSelect={handleOpenAddModal}
+              onPanelChange={onPanelChange}
+              cellRender={cellRender}
+            />
+          </ConfigProvider>
         </div>
       </div>
 

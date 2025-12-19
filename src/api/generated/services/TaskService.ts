@@ -30,7 +30,6 @@ export class TaskService {
   }
   /**
    * @param status
-   * @param filter
    * @param search
    * @param page
    * @param limit
@@ -44,7 +43,6 @@ export class TaskService {
    */
   public taskControllerGetTasks(
     status?: 'TO_DO' | 'IN_PROGRESS' | 'DONE',
-    filter: 'ALL' | 'TODAY' | 'UPCOMING' = 'ALL',
     search?: string,
     page?: number,
     limit?: number,
@@ -59,7 +57,6 @@ export class TaskService {
       url: '/task',
       query: {
         'status': status,
-        'filter': filter,
         'search': search,
         'page': page,
         'limit': limit,

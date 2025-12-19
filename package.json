@@ -10,6 +10,7 @@
     "codegen": "openapi -i http://localhost:3001/api-json -o ./src/api/generated -c axios --name ApiClient --indent 2"
   },
   "dependencies": {
+    "@ant-design/icons": "6.x",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",

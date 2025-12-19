@@ -2,7 +2,7 @@ import { TaskResponseDto } from "@/api/generated";
 import React from "react";
 import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { Avatar, List, Tag } from "antd";
+import { Avatar, List, Tag, Badge } from "antd"; 
 
 type RecentActivityListProps = {
   data: TaskResponseDto[];
@@ -17,6 +17,7 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
       </div>
     );
   }
+
   const getIcon = (task: TaskResponseDto) => {
     const isNew = dayjs(task.createdAt).isSame(dayjs(task.updatedAt), "minute");
     return isNew ? (
@@ -24,6 +25,27 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
     ) : (
       <EditOutlined className="text-yellow-500" />
     );
+  };
+
+
+  const formatStatus = (status: string) => {
+    return status
+      .replace(/_/g, " ") 
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase()); 
+  };
+
+ 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "DONE":
+        return "text-green-600 bg-green-100"; 
+      case "IN_PROGRESS":
+        return "text-yellow-600 bg-yellow-100"; 
+      case "TO_DO":
+      default:
+        return "text-gray-600 bg-gray-200"; 
+    }
   };
 
   return (
@@ -57,7 +79,14 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
             }
           />
 
-          <div className="text-xs font-semibold">{item.status}</div>
+    
+          <div
+            className={`text-xs font-medium px-2 py-1 rounded-md ${getStatusColor(
+              item.status
+            )}`}
+          >
+            {formatStatus(item.status)}
+          </div>
         </List.Item>
       )}
     />

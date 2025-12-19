@@ -24,7 +24,7 @@
 
 
 .ant-picker-calendar-date-content {
-  height: 70px !important;       
+  height: 80px !important;       
   overflow-y: auto !important;  
   overflow-x: hidden !important; 
 }

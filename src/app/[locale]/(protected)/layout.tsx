@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden flex-col md:flex-row">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
         <ProtectedPage>{children}</ProtectedPage>

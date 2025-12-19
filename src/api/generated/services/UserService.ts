@@ -2,7 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ChangePasswordDto } from '../models/ChangePasswordDto';
 import type { CreateUserDto } from '../models/CreateUserDto';
+import type { UpdateProfileDto } from '../models/UpdateProfileDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class UserService {
@@ -60,6 +62,37 @@ export class UserService {
         401: `Unauthorized`,
         500: `Internal server error`,
       },
+    });
+  }
+  /**
+   * @param requestBody
+   * @returns any updated profile successfully
+   * @throws ApiError
+   */
+  public userControllerUpdateProfile(
+    requestBody: UpdateProfileDto,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PATCH',
+      url: '/user/profile',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+  /**
+   * Change password
+   * @param requestBody
+   * @returns any change password successfully
+   * @throws ApiError
+   */
+  public userControllerChangePassword(
+    requestBody: ChangePasswordDto,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PATCH',
+      url: '/user/change-password',
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 }

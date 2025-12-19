@@ -1,14 +1,5 @@
 import React, { ReactNode } from "react";
-import { Button, ButtonProps, ConfigProvider } from "antd";
-
-// type CustomButtonProps = {
-//   children: ReactNode;
-//   variant?: "primary" | "secondary";
-//   htmlType?: "button" | "submit" | "reset";
-//   onClick?: () => void;
-//   loading?: boolean;
-//   disabled?: boolean;
-// };
+import { Button, ButtonProps } from "antd";
 
 type CustomButtonProps = {
   variant?: "primary" | "secondary" | "outline" | "ghost";
@@ -21,7 +12,6 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   ...rest
 }) => {
   const mergedStyle: React.CSSProperties = {
-    borderRadius: 8,
     fontWeight: 600,
     ...style,
   };
@@ -37,28 +27,15 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
     );
   }
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#FACC15",
-          colorPrimaryHover: "#E6B70F",
-          colorText: "#1F1F1F",
-          colorBgBase: "#F9FAFB",
-          borderRadius: 8,
-        },
+    <Button
+      type={variant === "primary" ? "primary" : "default"}
+      style={{
+        color: "#1F1F1F",
+        ...mergedStyle,
       }}
+      {...rest}
     >
-      {" "}
-      <Button
-        type={variant === "primary" ? "primary" : "default"}
-        style={{
-          color: "#1F1F1F",
-          ...mergedStyle,
-        }}
-        {...rest}
-      >
-        {children}
-      </Button>
-    </ConfigProvider>
+      {children}
+    </Button>
   );
 };

@@ -1,64 +1,54 @@
 "use client";
 
-import React from "react";
-import { RiListSettingsLine } from "react-icons/ri";
-import { FaSignOutAlt } from "react-icons/fa";
-import MenuList from "./MenuList";
-import LanguageSwitcher from "./LanguageSwitcher";
-import { apiClient } from "@/api";
-import { ApiError } from "@/api/generated";
-import { useNotify } from "@/app/contexts/NotificationContext";
-import { useAuth } from "@/app/contexts/AuthContext";
-import TagList from "./TagList";
-import { Link, useRouter } from "@/i18n/navigation";
+import React, { useState } from "react";
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer } from "antd";
+import SidebarContent from "./SidebarContent";
+import { usePathname } from "@/i18n/navigation";
 
 export default function Sidebar() {
-  const notification = useNotify();
-  const { logout } = useAuth();
-  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      router.push("/login");
-    } catch (e) {
-      if (e instanceof ApiError) {
-        notification?.showError("Logout failed", e.body?.message);
-      }
-    }
+  const getMobileTitle = () => {
+    if (pathname === "/" || pathname === "/dashboard") return "Dashboard";
+    if (pathname.includes("/tasks")) return "My Task";
+    if (pathname.includes("/calendar")) return "Calendar";
+    if (pathname.includes("/settings")) return "Settings";
+    return "Task Craft";
   };
+
   return (
     <>
-      <aside className={`w-72 h-screen p-4`}>
-        <nav className="flex flex-col justify-between bg-bg-base rounded-xl h-full p-4 shadow-sm">
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-text-primary text-xl font-semibold">
-                Task Craft
-              </h1>
-              <LanguageSwitcher />
-            </div>
-            <div className="flex flex-col gap-4">
-              <MenuList />
-              <TagList />
-            </div>
-          </div>
-          <div>
-            <ul>
-              <Link href="/settings" className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg">
-                <RiListSettingsLine />
-                <h3>Settings</h3>
-              </Link>
-              <li
-                className="flex items-center gap-2 text-text-secondary text-md cursor-pointer hover:bg-brand-hover p-2 rounded-lg"
-                onClick={() => handleLogout()}
-              >
-                <FaSignOutAlt />
-                <h3>Sign out</h3>
-              </li>
-            </ul>
-          </div>
-        </nav>
+      <div className="md:hidden w-full px-2 pt-2 flex items-center justify-between z-40">
+        <div className="flex items-center gap-3">
+          <Button
+            icon={<MenuOutlined />}
+            onClick={() => setOpen(true)}
+            type="text"
+            className="text-text-primary hover:bg-gray-100"
+          />
+          <span className="font-semibold text-3xl text-text-primary tracking-tight">
+            {getMobileTitle()}
+          </span>
+        </div>
+      </div>
+
+      <Drawer
+        placement="left"
+        onClose={() => setOpen(false)}
+        open={open}
+        width={280}
+        styles={{ body: { padding: 0, backgroundColor: "#F9FAFB" } }}
+        closeIcon={null}
+      >
+        <div className="h-full">
+          <SidebarContent />
+        </div>
+      </Drawer>
+
+      <aside className={`hidden md:block w-64 h-screen p-4`}>
+        <SidebarContent />
       </aside>
     </>
   );
