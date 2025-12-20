@@ -61,39 +61,39 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 py-4 pr-4 ">
+    <div className="flex flex-col gap-4 md:gap-6 py-4 px-4 md:px-0 md:pr-4 ">
       <PageHeader text="Dashboard" />
 
       <SummaryCards data={summary} loading={loading} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="col-span-1 md:col-span-2 h-80 bg-bg-base rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div className="col-span-1 md:col-span-2 h-64 md:h-80 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
+          <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
             Weekly Productivity
           </h3>
           <TrendAreaChart data={trendsData} />
         </div>
 
-        <div className="h-80 bg-bg-base rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+        <div className="h-64 md:h-80 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
+          <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
             Tasks by Status
           </h3>
           <StatusPieChart data={pieData} />
         </div>
 
-        <div className="h-80 bg-bg-base rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+        <div className="h-64 md:h-80 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
+          <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
             Tasks by Tags
           </h3>
           <TagsBarChart data={barData} />
         </div>
 
-        <div className="col-span-1 md:col-span-2 bg-bg-base rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+        <div className="col-span-1 md:col-span-2 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
+          <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
             Recent Activities
           </h3>
 
-          <div className="max-h-96 overflow-y-auto custom-scrollbar pr-2">
+          <div className="max-h-96 overflow-y-auto custom-scrollbar pr-1 md:pr-2">
             <RecentActivityList data={recentData} />
           </div>
         </div>

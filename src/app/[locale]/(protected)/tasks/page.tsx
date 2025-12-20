@@ -180,7 +180,7 @@ export default function Tasks() {
     }),
   };
 
-  // --- Logic การลบ Task ---
+  // --- Logic ลบ Task ---
 
   const handleDeleteTask = (id: string) => {
     const taskToDelete = taskList.find((t) => t.id === id);
@@ -217,7 +217,7 @@ export default function Tasks() {
       setIsModalOpen(true);
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Get task detail feiled", e.body?.message);
+        notification.showError("Get task detail failed", e.body?.message);
       }
     }
   };
@@ -297,7 +297,7 @@ export default function Tasks() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 py-4 pr-4 min-h-screen">
+    <div className="flex flex-col gap-2 py-4 px-2 md:px-0 md:pr-4 min-h-screen">
       <PageHeader text={t("TasksPage.title")} />
       <TaskFilter active={filter} onChange={setFilter} />
       <div className="flex w-full flex-col md:flex-row gap-3 items-center justify-between">
@@ -312,11 +312,11 @@ export default function Tasks() {
             className="w-full"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 md:flex gap-2 w-full md:w-auto">
           <Select
             mode="multiple"
             placeholder="Filter by Tags"
-            style={{ minWidth: 150 }}
+            className="w-full md:w-[180px]"
             maxTagCount="responsive"
             value={filterTags}
             onChange={setFilterTags}
@@ -329,7 +329,7 @@ export default function Tasks() {
 
           <Select
             defaultValue="createdAt_desc"
-            style={{ width: 160 }}
+            className="w-full md:w-[180px]"
             onChange={(value) => {
               const [field, order] = value.split("_");
               setSortBy(field as any);
@@ -346,7 +346,7 @@ export default function Tasks() {
         </div>
       </div>
 
-      <div className="flex flex-1 justify-between overflow-x-auto">
+      <div className="flex flex-1 justify-start md:justify-between overflow-x-auto snap-x snap-mandatory">
         <DndContext
           sensors={sensors}
           onDragStart={handleDragStart}

@@ -46,68 +46,85 @@ export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
   };
 
   if (isEditing) {
-    // --- Edit Mode ---
     return (
-      <Form layout="inline" onFinish={handleSubmit(handleSave)}>
-        <div className="flex w-full items-center gap-2 p-3 border rounded-lg bg-white shadow-sm">
-          <div>
-            <CustomColorPicker<EditTagForm> name="color" control={control} />
+      <Form onFinish={handleSubmit(handleSave)} component="div">
+        <div className="flex flex-col md:flex-row w-full items-start md:items-center md:gap-3 p-3 border rounded-lg bg-white shadow-sm ring-2 ring-brand/20">
+          <div className="flex flex-1 gap-3 w-full">
+            <div className="shrink-0">
+              <CustomColorPicker<EditTagForm> name="color" control={control} />
+            </div>
+            <div className="w-full">
+              <FormInput<EditTagForm>
+                name="name"
+                control={control}
+                formItemProps={{ style: { marginBottom: 0 } }}
+              />
+            </div>
           </div>
 
-          <div className="w-full">
-            <FormInput<EditTagForm> name="name" control={control} />
-          </div>
+          <div className="flex items-center justify-between w-full md:w-auto mt-2 md:mt-0 gap-4">
+            <span className=" text-gray-400 whitespace-nowrap">
+              {tag._count?.tasks || 0} tasks
+            </span>
 
-          <span className="text-sm text-gray-400 whitespace-nowrap">
-            ({tag._count?.tasks || 0} tasks)
-          </span>
-          <div className="ml-auto flex gap-2">
-            <Tooltip title="Cancel">
-              <CustomButton
-                icon={<FaTimes />}
-                onClick={handleCancel}
-                variant="outline"
-              />
-            </Tooltip>
-            <Tooltip title="Save">
-              <CustomButton
-                icon={<FaSave />}
-                variant="primary"
-                htmlType="submit"
-              />
-            </Tooltip>
+            <div className="flex gap-2">
+              <Tooltip title="Cancel">
+                <CustomButton
+                  icon={<FaTimes />}
+                  onClick={handleCancel}
+                  variant="outline"
+                />
+              </Tooltip>
+              <Tooltip title="Save">
+                <CustomButton
+                  icon={<FaSave />}
+                  variant="primary"
+                  htmlType="submit"
+                />
+              </Tooltip>
+            </div>
           </div>
         </div>
       </Form>
     );
   }
 
-  // --- View Mode ---
+
   return (
-    <div className="flex items-center gap-3 p-3 border rounded-lg bg-white shadow-sm">
-      <Tag color={tag.color} style={{ fontSize: "14px", padding: "4px 8px" }}>
-        {tag.name}
-      </Tag>
-      <span className="text-lg font-medium">{tag.name}</span>
-      <span className="text-sm text-gray-400 ml-4">
-        ({tag._count?.tasks || 0} tasks)
-      </span>
-      <div className="ml-auto flex gap-2">
-        <Tooltip title="Edit">
-          <CustomButton
-            icon={<RiEdit2Fill />}
-            onClick={() => setIsEditing(true)}
-            variant="secondary"
-          />
-        </Tooltip>
-        <Tooltip title="Delete">
-          <CustomButton
-            danger
-            icon={<RiDeleteBin6Fill />}
-            onClick={() => onDelete(tag)}
-            variant="outline"
-          />
-        </Tooltip>
+    <div className="flex items-center justify-between gap-3 p-3 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex items-center gap-2 md:gap-4 overflow-hidden">
+        <Tag color={tag.color} className="shrink-0 mr-0 hidden md:inline-block">
+          {tag.name}
+        </Tag>
+
+        <div className="flex items-baseline gap-2 overflow-hidden">
+          <span className="text-base md:text-lg font-medium truncate">
+            {tag.name}
+          </span>
+
+          <span className="text-xs md:text-sm text-gray-400 shrink-0">
+            <span className="md:hidden">({tag._count?.tasks || 0})</span>
+            <span className="hidden md:inline">
+              ({tag._count?.tasks || 0} tasks)
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div className="flex gap-1 md:gap-2 shrink-0 ml-2">
+        <CustomButton
+          icon={<RiEdit2Fill />}
+          onClick={() => setIsEditing(true)}
+          variant="secondary"
+          className="!p-2"
+        />
+        <CustomButton
+          danger
+          icon={<RiDeleteBin6Fill />}
+          onClick={() => onDelete(tag)}
+          variant="outline"
+          className="!p-2"
+        />
       </div>
     </div>
   );

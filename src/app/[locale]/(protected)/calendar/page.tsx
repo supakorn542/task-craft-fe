@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Badge, Calendar, ConfigProvider } from "antd";
-import type { BadgeProps, CalendarProps } from "antd";
+import type { CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 import PageHeader from "@/app/components/PageHeader";
 import {
@@ -18,18 +18,17 @@ import { Popover } from "antd";
 
 export default function TaskCalendar() {
   const [taskList, setTaskList] = useState<GetTaskResponseDto[]>([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] =
     useState<GetTaskDetailResponseDto | null>(null);
   const [initialDate, setInitialDate] = useState("");
-
   const [startDate, setStartDate] = useState(
     dayjs().startOf("month").toISOString()
   );
   const [endDate, setEndDate] = useState(dayjs().endOf("month").toISOString());
 
   const notification = useNotify();
+
 
   const handleOpenEditModal = async (id: string) => {
     try {
@@ -85,18 +84,17 @@ export default function TaskCalendar() {
     getTaskList();
   }, [startDate, endDate]);
 
-  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
+  const onPanelChange = (value: Dayjs) => {
     const start = value.startOf("M").toISOString();
     const end = value.endOf("M").toISOString();
-
     setStartDate(start);
     setEndDate(end);
   };
 
-  const renderTaskItem = (item: GetTaskResponseDto) => {
+
+  const renderTaskItemDesktop = (item: GetTaskResponseDto) => {
     const isOverdue =
       dayjs(item.dueDate).isBefore(dayjs(), "day") && item.status !== "DONE";
-
     return (
       <li
         key={item.id}
@@ -104,7 +102,7 @@ export default function TaskCalendar() {
           e.stopPropagation();
           handleOpenEditModal(item.id);
         }}
-        className="flex items-center gap-1 rounded cursor-pointer hover:bg-gray-200 transition-colors"
+        className="flex items-center gap-1 rounded cursor-pointer hover:bg-gray-200 transition-colors mb-1 px-1"
       >
         <Badge
           status={
@@ -117,7 +115,7 @@ export default function TaskCalendar() {
         />
         <span
           className={`text-xs truncate ${
-            isOverdue ? "text-red-500 font-bold" : ""
+            isOverdue ? "text-red-500 font-bold" : "text-gray-700"
           }`}
         >
           {item.title}
@@ -128,10 +126,12 @@ export default function TaskCalendar() {
 
   const dateCellRender = (value: Dayjs) => {
     const dateCellFormat = value.format("YYYY-MM-DD");
-
-    const taskFilted = taskList.filter((t) => {
+    const taskFiltered = taskList.filter((t) => {
       return dayjs(t.dueDate).format("YYYY-MM-DD") === dateCellFormat;
     });
+
+    if (taskFiltered.length === 0) return null;
+
 
     const popoverContent = (
       <div className="w-64">
@@ -139,31 +139,56 @@ export default function TaskCalendar() {
           {value.format("D MMM YYYY")}
         </h4>
         <ul className="m-0 p-0 list-none max-h-60 overflow-y-auto">
-          {taskFilted.map((item) => renderTaskItem(item))}
+          {taskFiltered.map((item) => renderTaskItemDesktop(item))}
         </ul>
       </div>
     );
 
     const MAX_VISIBLE_ITEMS = 2;
-    const visibleTasks = taskFilted.slice(0, MAX_VISIBLE_ITEMS);
-    const remainingCount = taskFilted.length - MAX_VISIBLE_ITEMS;
+    const visibleTasks = taskFiltered.slice(0, MAX_VISIBLE_ITEMS);
+    const remainingCount = taskFiltered.length - MAX_VISIBLE_ITEMS;
 
     return (
-      <ul className="m-0 p-0 list-none">
-        {visibleTasks.map((item) => renderTaskItem(item))}
-        {remainingCount > 0 && (
-          <Popover content={popoverContent} trigger="click" placement="bottom">
-            <li
-              className="text-xs text-gray-500 pl-4 cursor-pointer hover:text-blue-500 hover:font-bold transition-all"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
+      <>
+
+        <div className="md:hidden flex justify-center gap-0.5 mt-1 flex-wrap px-1">
+          {taskFiltered.slice(0, 4).map((task) => (
+            <div
+              key={task.id}
+              className={`w-1.5 h-1.5 rounded-full ${
+                task.status === "DONE"
+                  ? "bg-green-500"
+                  : dayjs(task.dueDate).isBefore(dayjs(), "day")
+                  ? "bg-red-500"
+                  : "bg-blue-400"
+              }`}
+            />
+          ))}
+          {taskFiltered.length > 4 && (
+            <span className="text-[8px] leading-none text-gray-400">+</span>
+          )}
+        </div>
+
+        <ul className="hidden md:block m-0 p-0 list-none mt-2">
+          {visibleTasks.map((item) => renderTaskItemDesktop(item))}
+          {remainingCount > 0 && (
+            <Popover
+              content={popoverContent}
+              trigger="click"
+              placement="bottom"
             >
-              + {remainingCount} more
-            </li>
-          </Popover>
-        )}
-      </ul>
+              <li
+                className="text-xs text-gray-500 pl-4 cursor-pointer hover:text-blue-500 hover:font-bold transition-all"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                + {remainingCount} more
+              </li>
+            </Popover>
+          )}
+        </ul>
+      </>
     );
   };
 
@@ -174,17 +199,17 @@ export default function TaskCalendar() {
     if (info.type === "date") {
       return dateCellRender(currentDate);
     }
-
     return info.originNode;
   };
 
   return (
     <>
-      <div className="flex flex-col gap-2 py-4 pr-4 h-screen overflow-hidden">
+      <div className="flex flex-col gap-2 py-4 pr-2 md:pr-4 h-screen overflow-hidden">
         <div className="flex-shrink-0">
           <PageHeader text="Calendar" />
         </div>
-        <div className="flex-1 overflow-y-auto bg-bg-base rounded-xl shadow-xl p-6 scrollbar-thin border border-gray-100">
+
+        <div className="flex-1 overflow-y-auto bg-bg-base rounded-xl shadow-xl p-2 md:p-6 scrollbar-thin border border-gray-100">
           <ConfigProvider
             theme={{
               components: {

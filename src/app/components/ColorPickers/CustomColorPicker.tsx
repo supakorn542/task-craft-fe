@@ -6,7 +6,7 @@ import {
   FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import { ColorPicker, ColorPickerProps, Form } from "antd";
+import { ColorPicker, ColorPickerProps, Form, FormItemProps } from "antd";
 import { Color } from "antd/es/color-picker";
 
 type CustomColorPickerProps<T extends FieldValues> = {
@@ -16,16 +16,18 @@ type CustomColorPickerProps<T extends FieldValues> = {
     RegisterOptions<T, Path<T>>,
     "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
   >;
+  formItemProps?: FormItemProps;
 } & ColorPickerProps;
 
 export default function CustomColorPicker<T extends FieldValues>({
   name,
   control,
   rules,
+  formItemProps,
   ...rest
 }: CustomColorPickerProps<T>) {
   return (
-    <Form.Item>
+    <Form.Item {...formItemProps} style={{ margin: 0, ...formItemProps?.style }}>
       <Controller
         name={name}
         control={control}

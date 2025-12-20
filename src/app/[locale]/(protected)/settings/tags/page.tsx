@@ -11,7 +11,7 @@ import {
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { Button, Modal, Input, ColorPicker, Spin } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { TagRow } from "../../../../../modules/tags/TagRow"; // ตรวจสอบ Path นี้ให้ถูกต้อง
+import { TagRow } from "../../../../../modules/tags/TagRow";
 import PageHeader from "@/app/components/PageHeader";
 import { CustomButton } from "@/app/components/Buttons/CustomButton";
 import { Form } from "antd";
@@ -128,8 +128,9 @@ export default function ManageTagsPage() {
   };
 
   return (
-    <div className="flex flex-col gap-4 py-4 pr-4 min-h-screen">
+    <div className="flex flex-col gap-4 py-4 px-2 md:px-0 md:pr-4 min-h-screen">
       <PageHeader text={"Manage Tags"} />
+
       <div className="flex flex-col gap-6">
         <div className="">
           {!isCreating ? (
@@ -138,34 +139,37 @@ export default function ManageTagsPage() {
             </CustomButton>
           ) : (
             <Form
-              layout="inline"
               onFinish={handleSubmit(handleCreateTagFormSubmit)}
+              component="div"
             >
-              <div className="flex gap-2 p-4 border rounded-lg bg-gray-50 w-full">
-                <div>
-                  <CustomColorPicker<CreateTagForm>
-                    name="color"
-                    control={control}
-                  />
+              <div className="flex flex-col md:flex-row items-center md:gap-3 p-4 border rounded-lg bg-gray-50 w-full shadow-sm">
+                <div className="flex flex-1 gap-3 items-center w-full">
+                  <div className="shrink-0">
+                    <CustomColorPicker<CreateTagForm>
+                      name="color"
+                      control={control}
+                    />
+                  </div>
+
+                  <div className="w-full">
+                    <FormInput<CreateTagForm>
+                      name="name"
+                      control={control}
+                      placeholder="New tag name"
+                      rules={{ required: "Name is required" }}
+                      formItemProps={{ style: { marginBottom: 0 } }}
+                    />
+                  </div>
                 </div>
 
-                <div className="w-full">
-                  <FormInput<CreateTagForm>
-                    name="name"
-                    control={control}
-                    placeholder="New tag name"
-                    rules={{ required: "Name is required" }}
-                  />
-                </div>
-                <div>
+                <div className="flex self-end justify-end gap-2 md:w-auto mt-2 md:mt-0">
                   <CustomButton
                     onClick={() => setIsCreating(false)}
                     variant="secondary"
                   >
                     Cancel
                   </CustomButton>
-                </div>
-                <div>
+
                   <CustomButton htmlType="submit" variant="primary">
                     Save
                   </CustomButton>

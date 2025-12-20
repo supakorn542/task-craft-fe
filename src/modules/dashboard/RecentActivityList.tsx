@@ -2,7 +2,7 @@ import { TaskResponseDto } from "@/api/generated";
 import React from "react";
 import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { Avatar, List, Tag, Badge } from "antd"; 
+import { Avatar, List, Tag, Badge } from "antd";
 
 type RecentActivityListProps = {
   data: TaskResponseDto[];
@@ -27,24 +27,22 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
     );
   };
 
-
   const formatStatus = (status: string) => {
     return status
-      .replace(/_/g, " ") 
+      .replace(/_/g, " ")
       .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase()); 
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
- 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "DONE":
-        return "text-green-600 bg-green-100"; 
+        return "text-green-600 bg-green-100";
       case "IN_PROGRESS":
-        return "text-yellow-600 bg-yellow-100"; 
+        return "text-yellow-600 bg-yellow-100";
       case "TO_DO":
       default:
-        return "text-gray-600 bg-gray-200"; 
+        return "text-gray-600 bg-gray-200";
     }
   };
 
@@ -63,25 +61,30 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
               />
             }
             title={
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="font-medium truncate">{item.title}</span>
-                {item.tags.map((tag) => (
-                  <Tag color={tag.color} key={tag.id} className="mr-0">
-                    {tag.name}
-                  </Tag>
-                ))}
+                <div className="flex flex-wrap gap-1">
+                  {item.tags.map((tag) => (
+                    <Tag
+                      color={tag.color}
+                      key={tag.id}
+                      className="!mr-0 !text-[10px] !px-1 !leading-tight"
+                    >
+                      {tag.name}
+                    </Tag>
+                  ))}
+                </div>
               </div>
             }
             description={
-              <span className="text-xs text-gray-600">
+              <span className="text-[10px] sm:text-xs text-gray-600">
                 Updated {dayjs(item.updatedAt).format("DD MMM HH:mm")}
               </span>
             }
           />
 
-    
           <div
-            className={`text-xs font-medium px-2 py-1 rounded-md ${getStatusColor(
+            className={`text-[10px] sm:text-xs font-medium px-2 py-1 rounded-md ${getStatusColor(
               item.status
             )}`}
           >

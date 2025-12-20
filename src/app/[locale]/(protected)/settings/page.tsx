@@ -30,7 +30,7 @@ export default function SettingsPage() {
 
 
   return (
-    <div className="flex flex-col gap-4 py-4 pr-4 min-h-screen">
+    <div className="flex flex-col gap-4 py-4 px-4 md:px-0 md:pr-4 min-h-screen">
       <PageHeader text={"Settings"} />
 
       <div className="flex flex-col gap-4">
@@ -38,12 +38,12 @@ export default function SettingsPage() {
           <Link
             key={item.href}
             href={item.href}
-            className="flex items-center p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition"
+            className="flex items-center p-2 md:p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition"
           >
-            <div className="p-3 bg-gray-100 rounded-lg mr-4">{item.icon}</div>
+            <div className="p-2 md:p-3 bg-gray-100 rounded-lg mr-4">{item.icon}</div>
             <div>
-              <h2 className="text-lg font-semibold">{item.title}</h2>
-              <p className="text-sm text-gray-500">{item.description}</p>
+              <h2 className="text-md md:text-lg font-semibold">{item.title}</h2>
+              <p className="text-xs md:text-sm text-gray-500">{item.description}</p>
             </div>
             <span className="ml-auto text-gray-400">{">"}</span>
           </Link>

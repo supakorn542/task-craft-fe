@@ -60,10 +60,10 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="flex flex-col gap-4 py-4 pr-4 min-h-screen">
+    <div className="flex flex-col gap-4 py-4 px-4 md:px-0 md:pr-4 min-h-screen">
       <PageHeader text={"Account"} />
       <section>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Profile</h3>
+        <h3 className="text-md md:text-lg font-semibold mb-4 text-gray-700">Profile</h3>
         <Card className="shadow-sm">
           <div className="flex flex-col gap-4">
             <div>
@@ -89,7 +89,7 @@ export default function AccountPage() {
         </Card>
       </section>
       <section>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Security</h3>
+        <h3 className="text-md md:text-lg font-semibold mb-4 text-gray-700">Security</h3>
         <Card className="shadow-sm">
           <Form layout="vertical" onFinish={handleSubmit(handleChangePassword)}>
             <FormInput

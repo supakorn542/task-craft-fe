@@ -36,6 +36,13 @@ export default function TagsBarChart({ data }: TagsBarChartProps) {
           tick={{ fontSize: 12 }}
           axisLine={false}
           tickLine={false}
+          tickFormatter={(value) => {
+            const limit = 2;
+            if (value.length > limit) {
+              return `${value.substring(0, limit)}...`;
+            }
+            return value;
+          }}
         />
 
         <YAxis allowDecimals={false} axisLine={false} tickLine={false} />
@@ -50,7 +57,7 @@ export default function TagsBarChart({ data }: TagsBarChartProps) {
           }}
         />
 
-        <Bar dataKey="taskCount" radius={[4, 4, 0, 0]}>
+        <Bar dataKey="taskCount" radius={[4, 4, 0, 0]} maxBarSize={50}>
           {data.map((item, index) => (
             <Cell key={`cell-${index}`} fill={item.color} />
           ))}

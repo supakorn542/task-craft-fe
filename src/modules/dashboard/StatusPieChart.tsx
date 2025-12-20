@@ -38,9 +38,9 @@ export default function StatusPieChart({ data }: StatusPieChartProps) {
           dataKey="value"
           nameKey="name"
           cx="50%"
-          cy="50%"
-          innerRadius={50}
-          outerRadius={80}
+          cy="45%"
+          innerRadius="50%"
+          outerRadius="80%"
           paddingAngle={5}
           cornerRadius={4}
           labelLine={false}
@@ -62,7 +62,7 @@ export default function StatusPieChart({ data }: StatusPieChartProps) {
 
           <Legend
             verticalAlign="bottom"
-            height={36}
+            height={48}
             formatter={formatStatusName}
             iconType="circle"
           />
