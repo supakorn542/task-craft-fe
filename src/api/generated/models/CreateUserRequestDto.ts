@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateUserDto = {
+export type CreateUserRequestDto = {
   email: string;
   password: string;
 };

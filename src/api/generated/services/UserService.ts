@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ChangePasswordDto } from '../models/ChangePasswordDto';
-import type { CreateUserDto } from '../models/CreateUserDto';
+import type { CreateUserRequestDto } from '../models/CreateUserRequestDto';
 import type { UpdateProfileDto } from '../models/UpdateProfileDto';
+import type { UserResponseDto } from '../models/UserResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class UserService {
@@ -12,12 +13,12 @@ export class UserService {
   /**
    * Create new user
    * @param requestBody
-   * @returns any User created successfully
+   * @returns UserResponseDto User created successfully
    * @throws ApiError
    */
   public userControllerCreate(
-    requestBody: CreateUserDto,
-  ): CancelablePromise<any> {
+    requestBody: CreateUserRequestDto,
+  ): CancelablePromise<UserResponseDto> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/user',
