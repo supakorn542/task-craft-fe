@@ -21,11 +21,13 @@ export type { DashboardBarChartResponseDto } from './models/DashboardBarChartRes
 export type { DashboardPieChartResponseDto } from './models/DashboardPieChartResponseDto';
 export type { DashboardSummaryResponseDto } from './models/DashboardSummaryResponseDto';
 export type { DashboardTrendResponseDto } from './models/DashboardTrendResponseDto';
+export type { ForgotPasswordDto } from './models/ForgotPasswordDto';
 export type { GetPaginatedTaskResponseDto } from './models/GetPaginatedTaskResponseDto';
 export type { GetTagListResponseDto } from './models/GetTagListResponseDto';
 export { GetTaskDetailResponseDto } from './models/GetTaskDetailResponseDto';
 export { GetTaskResponseDto } from './models/GetTaskResponseDto';
 export type { LoginDto } from './models/LoginDto';
+export type { ResetPasswordDto } from './models/ResetPasswordDto';
 export type { TagCountDto } from './models/TagCountDto';
 export type { TagResponseDto } from './models/TagResponseDto';
 export { TaskResponseDto } from './models/TaskResponseDto';

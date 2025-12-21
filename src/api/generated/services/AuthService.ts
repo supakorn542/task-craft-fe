@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AuthEntity } from '../models/AuthEntity';
+import type { ForgotPasswordDto } from '../models/ForgotPasswordDto';
 import type { LoginDto } from '../models/LoginDto';
+import type { ResetPasswordDto } from '../models/ResetPasswordDto';
 import type { UserDto } from '../models/UserDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -61,6 +63,38 @@ export class AuthService {
       errors: {
         401: `User is not logged in or token is invalid`,
       },
+    });
+  }
+  /**
+   * Request password reset link
+   * @param requestBody
+   * @returns any
+   * @throws ApiError
+   */
+  public authControllerForgotPassword(
+    requestBody: ForgotPasswordDto,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/auth/forgot-password',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+  /**
+   * Set new password with token
+   * @param requestBody
+   * @returns any
+   * @throws ApiError
+   */
+  public authControllerResetPassword(
+    requestBody: ResetPasswordDto,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/auth/reset-password',
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 }
