@@ -24,6 +24,9 @@ export class AuthService {
       url: '/auth/login',
       body: requestBody,
       mediaType: 'application/json',
+      errors: {
+        401: `Invalid credentials`,
+      },
     });
   }
   /**

@@ -27,9 +27,11 @@ export default function ProtectedPage({ children }: { children: ReactNode }) {
     if (!authPending && !user) {
       router.replace(`/login${makeRedirectTo(pathname, searchParams)}`);
     }
-  }, [user, authPending, pathname, searchParams]);
+  }, [user, authPending,router, pathname, searchParams]);
 
   if (authPending) return <AuthLoading />;
+
+  if (!user) return null;
 
   return user ? <>{children}</> : null;
 }

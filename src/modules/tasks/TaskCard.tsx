@@ -71,7 +71,7 @@ export default function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
 
       <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
         {task.tags && task.tags.length > 0 && (
-          <div>
+          <div className="flex flex-wrap gap-x-2">
             {task.tags.map((tag) => {
               return (
                 <span className="flex items-center gap-1" key={tag.id}>

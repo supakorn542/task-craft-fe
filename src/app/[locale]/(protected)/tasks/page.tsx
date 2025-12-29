@@ -40,6 +40,7 @@ import { useDroppable } from "@dnd-kit/core";
 import TaskColumn from "@/modules/tasks/TaskColumn";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import dayjs from "dayjs";
+import TaskSkeleton from "@/app/components/Skeletons/TaskSkeleton";
 
 type TaskForm = {
   search: string;
@@ -52,6 +53,8 @@ export default function Tasks() {
 
   const t = useTranslations();
   const notification = useNotify();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [taskList, setTaskList] = useState<GetTaskResponseDto[]>([]);
   const status = Object.values(TaskStatus);
@@ -234,6 +237,7 @@ export default function Tasks() {
   };
 
   const getTasksData = async () => {
+    setIsLoading(true);
     try {
       let startDate: string | undefined;
       let endDate: string | undefined;
@@ -264,6 +268,8 @@ export default function Tasks() {
       if (e instanceof ApiError) {
         notification.showError("Get Tasks Data Failed", e.body?.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -345,36 +351,39 @@ export default function Tasks() {
           />
         </div>
       </div>
-
-      <div className="flex flex-1 justify-start md:justify-between overflow-x-auto snap-x snap-mandatory">
-        <DndContext
-          sensors={sensors}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          collisionDetection={closestCorners}
-        >
-          {status.map((col) => (
-            <TaskColumn
-              key={col}
-              status={col as TaskStatus}
-              title={
-                col === "TO_DO"
-                  ? "To Do"
-                  : col === "IN_PROGRESS"
-                  ? "In Progress"
-                  : "Done"
-              }
-              tasks={taskList.filter((t) => t.status === col)}
-              onAddTask={() => handleOpenAddTaskModal(col as TaskStatus)}
-              onEditTask={(id) => handleOpenEditModal(id)}
-              onDeleteTask={handleDeleteTask}
-            />
-          ))}
-          <DragOverlay dropAnimation={dropAnimation}>
-            {activeTask ? <TaskCardOverlay task={activeTask} /> : null}
-          </DragOverlay>
-        </DndContext>
-      </div>
+      {isLoading ? (
+        <TaskSkeleton />
+      ) : (
+        <div className="flex flex-1 justify-start md:justify-between overflow-x-auto snap-x snap-mandatory">
+          <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            collisionDetection={closestCorners}
+          >
+            {status.map((col) => (
+              <TaskColumn
+                key={col}
+                status={col as TaskStatus}
+                title={
+                  col === "TO_DO"
+                    ? "To Do"
+                    : col === "IN_PROGRESS"
+                    ? "In Progress"
+                    : "Done"
+                }
+                tasks={taskList.filter((t) => t.status === col)}
+                onAddTask={() => handleOpenAddTaskModal(col as TaskStatus)}
+                onEditTask={(id) => handleOpenEditModal(id)}
+                onDeleteTask={handleDeleteTask}
+              />
+            ))}
+            <DragOverlay dropAnimation={dropAnimation}>
+              {activeTask ? <TaskCardOverlay task={activeTask} /> : null}
+            </DragOverlay>
+          </DndContext>
+        </div>
+      )}
 
       <TaskModal
         open={isModalOpen}

@@ -8,6 +8,7 @@ import { useNotify } from "@/app/contexts/NotificationContext";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { CustomButton } from "@/app/components/Buttons/CustomButton";
 import { Link } from "@/i18n/navigation";
+import { getErrorMessage } from "@/utils/error";
 
 type LoginFormValues = {
   email: string;
@@ -32,9 +33,7 @@ export default function LoginForm() {
       await login(data.email, data.password);
       router.push("/dashboard");
     } catch (e) {
-      if (e instanceof ApiError) {
-        notification?.showError("Login failed", e.body?.message);
-      }
+      notification.showError("Login failed", getErrorMessage(e));
     }
   };
 
@@ -69,13 +68,21 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <CustomButton htmlType="submit" variant="primary" loading={isSubmitting} className="w-full mt-2">
+      <CustomButton
+        htmlType="submit"
+        variant="primary"
+        loading={isSubmitting}
+        className="w-full mt-2"
+      >
         Login
       </CustomButton>
 
       <div className="mt-4 text-center text-sm text-gray-500">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="font-semibold text-brand hover:underline">
+        <Link
+          href="/register"
+          className="font-semibold text-brand hover:underline"
+        >
           Sign up
         </Link>
       </div>

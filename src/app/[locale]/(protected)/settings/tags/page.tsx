@@ -20,6 +20,8 @@ import { useForm } from "react-hook-form";
 import { FormInput } from "@/app/components/Input/FormInput";
 import TagDeleteModal from "@/modules/tags/TagDeleteModal";
 import { useTags } from "@/app/contexts/TagContext";
+import ListSkeleton from "@/app/components/Skeletons/ListSkeleton";
+import { getErrorMessage } from "@/utils/error";
 
 type CreateTagForm = {
   name: string;
@@ -82,9 +84,7 @@ export default function ManageTagsPage() {
       getTagData();
       refreshTags();
     } catch (e) {
-      if (e instanceof ApiError) {
-        notification.showError("Failed to create tag", e.body?.message);
-      }
+      notification.showError("Failed to create tag", getErrorMessage(e));
     }
   };
 
@@ -140,7 +140,6 @@ export default function ManageTagsPage() {
           ) : (
             <Form
               onFinish={handleSubmit(handleCreateTagFormSubmit)}
-              component="div"
             >
               <div className="flex flex-col md:flex-row items-center md:gap-3 p-4 border rounded-lg bg-gray-50 w-full shadow-sm">
                 <div className="flex flex-1 gap-3 items-center w-full">
@@ -181,9 +180,7 @@ export default function ManageTagsPage() {
 
         <div className="flex flex-col gap-2">
           {isLoading ? (
-            <div className="text-center p-10">
-              <Spin size="large" />
-            </div>
+            <ListSkeleton count={5} />
           ) : (
             tags.map((tag) => (
               <TagRow

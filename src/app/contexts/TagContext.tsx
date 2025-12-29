@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { useNotify } from "./NotificationContext";
 import { apiClient } from "@/api";
+import { useAuth } from "./AuthContext";
 
 type TagContextProps = {
   tags: GetTagListResponseDto[];
@@ -23,8 +24,10 @@ export default function TagProvider({ children }: { children: ReactNode }) {
   const [tags, setTags] = useState<GetTagListResponseDto[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const notification = useNotify();
+  const { isLoggedIn } = useAuth();
 
   const getTagList = async () => {
+    setIsLoading(true);
     try {
       const res = await apiClient.tag.tagControllerGetTags();
       setTags(res);
@@ -38,9 +41,13 @@ export default function TagProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    getTagList();
-  }, []);
+    if (isLoggedIn) {
+      setIsLoading(true);
+      getTagList();
+    } else {
+      setTags([]);
+    }
+  }, [isLoggedIn]);
 
   return (
     <TagContext.Provider value={{ tags, isLoading, refreshTags: getTagList }}>

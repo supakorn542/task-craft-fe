@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Badge, Calendar, ConfigProvider } from "antd";
+import { Badge, Calendar, ConfigProvider, Spin } from "antd";
 import type { CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 import PageHeader from "@/app/components/PageHeader";
@@ -27,8 +27,9 @@ export default function TaskCalendar() {
   );
   const [endDate, setEndDate] = useState(dayjs().endOf("month").toISOString());
 
-  const notification = useNotify();
+  const [isLoading, setIsLoading] = useState(false);
 
+  const notification = useNotify();
 
   const handleOpenEditModal = async (id: string) => {
     try {
@@ -60,6 +61,7 @@ export default function TaskCalendar() {
   };
 
   const getTaskList = async () => {
+    setIsLoading(true);
     try {
       const res = await apiClient.task.taskControllerGetTasks(
         undefined,
@@ -77,6 +79,8 @@ export default function TaskCalendar() {
       if (e instanceof ApiError) {
         notification.showError("Failed to get task list ", e.body?.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,7 +94,6 @@ export default function TaskCalendar() {
     setStartDate(start);
     setEndDate(end);
   };
-
 
   const renderTaskItemDesktop = (item: GetTaskResponseDto) => {
     const isOverdue =
@@ -132,7 +135,6 @@ export default function TaskCalendar() {
 
     if (taskFiltered.length === 0) return null;
 
-
     const popoverContent = (
       <div className="w-64">
         <h4 className="text-sm font-bold mb-2 text-black border-b pb-1">
@@ -150,7 +152,6 @@ export default function TaskCalendar() {
 
     return (
       <>
-
         <div className="md:hidden flex justify-center gap-0.5 mt-1 flex-wrap px-1">
           {taskFiltered.slice(0, 4).map((task) => (
             <div
@@ -210,6 +211,11 @@ export default function TaskCalendar() {
         </div>
 
         <div className="flex-1 overflow-y-auto bg-bg-base rounded-xl shadow-xl p-2 md:p-6 scrollbar-thin border border-gray-100">
+          {isLoading && (
+            <div className="absolute inset-0 bg-white/50 z-10 flex items-center justify-center">
+              <Spin size="large" />
+            </div>
+          )}
           <ConfigProvider
             theme={{
               components: {

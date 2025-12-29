@@ -1,18 +1,13 @@
 "use client";
 
-import { ApiError, GetTagListResponseDto } from "@/api/generated";
 import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
-import React, { useEffect, useState } from "react";
-import { useNotify } from "@/app/contexts/NotificationContext";
-import { apiClient } from "@/api";
+import React from "react";
 import clsx from "clsx";
 import { useTags } from "@/app/contexts/TagContext";
 
 export default function TagList() {
-  // const [tags, setTags] = useState<GetTagListResponseDto[]>([]);
-  // const notification = useNotify();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -20,21 +15,6 @@ export default function TagList() {
   const selectedTagId = searchParams.get("tagId");
 
   const { tags } = useTags();
-
-  // useEffect(() => {
-  //   const getUserTags = async () => {
-  //     try {
-  //       const res = await apiClient.tag.tagControllerGetTags();
-  //       setTags(res);
-  //     } catch (e) {
-  //       if (e instanceof ApiError) {
-  //         notification.showError("Get user tags failed", e.body?.message);
-  //       }
-  //     }
-  //   };
-
-  //   getUserTags();
-  // }, []);
 
   const handleSelectTag = (tagId: string) => {
     const isOnTaskPage = pathname === "/tasks";
@@ -48,13 +28,18 @@ export default function TagList() {
     router.push(`/tasks?tagId=${tagId}`);
   };
 
+  const VISIBLE_LIMIT = 7;
+  const visibleTags = tags.slice(0, VISIBLE_LIMIT);
+  const remainingCount = tags.length - VISIBLE_LIMIT;
+
   return (
-    <div>
-      <h3 className="px-2 mt-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+    <div className="mt-4">
+      <h3 className="px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
         Tags
       </h3>
+
       <ul className="mt-2 flex flex-col gap-1">
-        {tags.map((tag) => (
+        {visibleTags.map((tag) => (
           <li
             key={tag.id}
             onClick={() => handleSelectTag(tag.id)}
@@ -73,6 +58,15 @@ export default function TagList() {
           </li>
         ))}
       </ul>
+
+      {remainingCount > 0 && (
+        <button
+          onClick={() => router.push("/settings/tags")}
+          className="w-full text-left px-2 py-2 text-xs text-gray-500 hover:text-brand hover:bg-gray-50 rounded-lg transition-colors mt-1 cursor-pointer"
+        >
+          + {remainingCount} more tags...
+        </button>
+      )}
     </div>
   );
 }

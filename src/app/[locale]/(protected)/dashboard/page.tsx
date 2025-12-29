@@ -18,6 +18,7 @@ import StatusPieChart from "@/modules/dashboard/StatusPieChart";
 import TagsBarChart from "@/modules/dashboard/TagsBarChart";
 import TrendAreaChart from "@/modules/dashboard/TrendAreaChart";
 import RecentActivityList from "@/modules/dashboard/RecentActivityList";
+import DashboardSkeleton from "@/app/components/Skeletons/DashboardSkeleton";
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState<
@@ -59,6 +60,15 @@ export default function DashboardPage() {
   useEffect(() => {
     getDashboardData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-4 md:gap-6 py-4 px-4 md:px-0 md:pr-4">
+        <PageHeader text="Dashboard" />
+        <DashboardSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4 md:gap-6 py-4 px-4 md:px-0 md:pr-4 ">

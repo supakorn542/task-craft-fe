@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const data = await apiClient.auth.authControllerGetProfile();
       setUser(data);
-    } catch {
+    } catch (error) {
       setUser(null);
     } finally {
       setAuthPending(false);
@@ -48,9 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await getUser();
       notification?.showSuccess("Login successful", "Welcome back!");
     } catch (e) {
-      if (e instanceof ApiError) {
-        notification?.showError("Login failed", e.body?.message);
-      }
+      throw e;
     }
   };
 
