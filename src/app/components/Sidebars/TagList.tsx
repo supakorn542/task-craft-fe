@@ -28,7 +28,7 @@ export default function TagList() {
     router.push(`/tasks?tagId=${tagId}`);
   };
 
-  const VISIBLE_LIMIT = 7;
+  const VISIBLE_LIMIT = 6;
   const visibleTags = tags.slice(0, VISIBLE_LIMIT);
   const remainingCount = tags.length - VISIBLE_LIMIT;
 

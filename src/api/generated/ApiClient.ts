@@ -8,6 +8,7 @@ import { AxiosHttpRequest } from './core/AxiosHttpRequest';
 import { AppService } from './services/AppService';
 import { AuthService } from './services/AuthService';
 import { DashboardService } from './services/DashboardService';
+import { NotificationService } from './services/NotificationService';
 import { TagService } from './services/TagService';
 import { TaskService } from './services/TaskService';
 import { UserService } from './services/UserService';
@@ -16,6 +17,7 @@ export class ApiClient {
   public readonly app: AppService;
   public readonly auth: AuthService;
   public readonly dashboard: DashboardService;
+  public readonly notification: NotificationService;
   public readonly tag: TagService;
   public readonly task: TaskService;
   public readonly user: UserService;
@@ -35,6 +37,7 @@ export class ApiClient {
     this.app = new AppService(this.request);
     this.auth = new AuthService(this.request);
     this.dashboard = new DashboardService(this.request);
+    this.notification = new NotificationService(this.request);
     this.tag = new TagService(this.request);
     this.task = new TaskService(this.request);
     this.user = new UserService(this.request);

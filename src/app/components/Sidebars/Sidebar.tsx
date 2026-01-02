@@ -5,6 +5,7 @@ import { MenuOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import SidebarContent from "./SidebarContent";
 import { usePathname } from "@/i18n/navigation";
+import NotificationBell from "./NotificationBell";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function Sidebar() {
     if (pathname.includes("/tasks")) return "My Task";
     if (pathname.includes("/calendar")) return "Calendar";
     if (pathname.includes("/settings")) return "Settings";
+    if (pathname.includes("/notifications")) return "Notifications";
     return "Task Craft";
   };
 
@@ -31,6 +33,9 @@ export default function Sidebar() {
           <span className="font-semibold text-3xl text-text-primary tracking-tight">
             {getMobileTitle()}
           </span>
+        </div>
+        <div className="flex items-center p-2">
+          <NotificationBell />
         </div>
       </div>
 

@@ -8,6 +8,7 @@ import { useNotify } from "@/app/contexts/NotificationContext";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { ApiError } from "@/api/generated";
 import { Link, useRouter } from "@/i18n/navigation";
+import NotificationBell from "./NotificationBell";
 
 export default function SidebarContent() {
   const notification = useNotify();
@@ -32,7 +33,10 @@ export default function SidebarContent() {
           <h1 className="text-text-primary text-2xl font-semibold tracking-tight">
             Task Craft
           </h1>
-          <LanguageSwitcher />
+          <div className="flex items-center gap-1">
+            <LanguageSwitcher />
+            <NotificationBell />
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <MenuList />
