@@ -22,6 +22,7 @@ import TagDeleteModal from "@/modules/tags/TagDeleteModal";
 import { useTags } from "@/app/contexts/TagContext";
 import ListSkeleton from "@/app/components/Skeletons/ListSkeleton";
 import { getErrorMessage } from "@/utils/error";
+import { useTranslations } from "next-intl";
 
 type CreateTagForm = {
   name: string;
@@ -29,6 +30,7 @@ type CreateTagForm = {
 };
 
 export default function ManageTagsPage() {
+  const t = useTranslations();
   const notification = useNotify();
 
   const { refreshTags } = useTags();
@@ -57,7 +59,10 @@ export default function ManageTagsPage() {
       setTags(res);
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to fetch tags", e.body?.message);
+        notification.showError(
+          t("Tags.notifications.fetchError"),
+          e.body?.message
+        );
       }
     } finally {
       setIsLoading(false);
@@ -78,13 +83,18 @@ export default function ManageTagsPage() {
     try {
       const res = await apiClient.tag.tagControllerCreateTag(tagDto);
 
-      notification.showSuccess(`Tag ${res.name} created successfully`);
+      notification.showSuccess(
+        t("Tags.notifications.createSuccess", { name: res.name })
+      );
       reset();
       setIsCreating(false);
       getTagData();
       refreshTags();
     } catch (e) {
-      notification.showError("Failed to create tag", getErrorMessage(e));
+      notification.showError(
+        t("Tags.notifications.createError"),
+        getErrorMessage(e)
+      );
     }
   };
 
@@ -99,14 +109,17 @@ export default function ManageTagsPage() {
     try {
       await apiClient.tag.tagControllerDeleteTag(deletingTag.id);
       notification.showSuccess(
-        `Tag "${deletingTag.name}" deleted successfully`
+        t("Tags.notifications.deleteSuccess", { name: deletingTag.name })
       );
       setDeletingTag(null);
       getTagData();
       refreshTags();
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to delete tag", e.body?.message);
+        notification.showError(
+          t("Tags.notifications.deleteError"),
+          e.body?.message
+        );
       }
     } finally {
       setIsDeleting(false);
@@ -117,11 +130,11 @@ export default function ManageTagsPage() {
   const handleUpdateTag = async (id: string, data: UpdateTagRequestDto) => {
     try {
       await apiClient.tag.tagControllerUpdateTag(id, data);
-      notification.showSuccess("Tag updated successfully");
+      notification.showSuccess(t("Tags.notifications.updateSuccess"));
       getTagData();
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to update tag", e.body?.message);
+        notification.showError(t("Tags.notifications.updateError"), e.body?.message);
         throw e;
       }
     }
@@ -129,18 +142,16 @@ export default function ManageTagsPage() {
 
   return (
     <div className="flex flex-col gap-4 py-4 px-2 md:px-0 md:pr-4 min-h-screen">
-      <PageHeader text={"Manage Tags"} />
+      <PageHeader text={t("Tags.title")} />
 
       <div className="flex flex-col gap-6">
         <div className="">
           {!isCreating ? (
             <CustomButton variant="primary" onClick={() => setIsCreating(true)}>
-              + Create New Tag
+              {t("Tags.createButton")}
             </CustomButton>
           ) : (
-            <Form
-              onFinish={handleSubmit(handleCreateTagFormSubmit)}
-            >
+            <Form onFinish={handleSubmit(handleCreateTagFormSubmit)}>
               <div className="flex flex-col md:flex-row items-center md:gap-3 p-4 border rounded-lg bg-gray-50 w-full shadow-sm">
                 <div className="flex flex-1 gap-3 items-center w-full">
                   <div className="shrink-0">
@@ -154,8 +165,8 @@ export default function ManageTagsPage() {
                     <FormInput<CreateTagForm>
                       name="name"
                       control={control}
-                      placeholder="New tag name"
-                      rules={{ required: "Name is required" }}
+                      placeholder={t("Tags.form.placeholder")}
+                      rules={{ required: t("Tags.form.required") }}
                       formItemProps={{ style: { marginBottom: 0 } }}
                     />
                   </div>
@@ -166,11 +177,11 @@ export default function ManageTagsPage() {
                     onClick={() => setIsCreating(false)}
                     variant="secondary"
                   >
-                    Cancel
+                    {t("Tags.form.cancel")}
                   </CustomButton>
 
                   <CustomButton htmlType="submit" variant="primary">
-                    Save
+                    {t("Tags.form.save")}
                   </CustomButton>
                 </div>
               </div>

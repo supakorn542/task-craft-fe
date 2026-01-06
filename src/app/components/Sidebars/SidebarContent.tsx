@@ -9,11 +9,14 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import { ApiError } from "@/api/generated";
 import { Link, useRouter } from "@/i18n/navigation";
 import NotificationBell from "./NotificationBell";
+import { useTranslations } from "next-intl";
 
 export default function SidebarContent() {
   const notification = useNotify();
   const { logout } = useAuth();
   const router = useRouter();
+
+  const t = useTranslations();
 
   const handleLogout = async () => {
     try {
@@ -30,9 +33,12 @@ export default function SidebarContent() {
     <nav className="flex flex-col justify-between bg-bg-base rounded-xl h-full p-4 shadow-xl">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-text-primary text-2xl font-semibold tracking-tight">
-            Task Craft
-          </h1>
+          <Link href={"/dashboard"}>
+            <h1 className="text-text-primary text-2xl font-semibold tracking-tight">
+              Task Craft
+            </h1>
+          </Link>
+
           <div className="flex items-center gap-1">
             <LanguageSwitcher />
             <NotificationBell />
@@ -48,7 +54,7 @@ export default function SidebarContent() {
           <Link href="/settings" className="w-full">
             <div className="flex items-center gap-2 text-text-secondary text-sm cursor-pointer hover:bg-brand-hover p-2 rounded-lg transition-colors">
               <RiListSettingsLine />
-              <h3>Settings</h3>
+              <h3>{t("Sidebar.settings")}</h3>
             </div>
           </Link>
           <li
@@ -56,7 +62,7 @@ export default function SidebarContent() {
             onClick={() => handleLogout()}
           >
             <FaSignOutAlt />
-            <h3>Sign out</h3>
+            <h3>{t("Sidebar.logout")}</h3>
           </li>
         </ul>
       </div>

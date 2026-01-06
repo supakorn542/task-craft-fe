@@ -1,4 +1,5 @@
 import { DashboardPieChartResponseDto } from "@/api/generated";
+import { useTranslations } from "next-intl";
 import React from "react";
 import {
   PieChart,
@@ -15,19 +16,18 @@ type StatusPieChartProps = {
 };
 
 export default function StatusPieChart({ data }: StatusPieChartProps) {
+  const t = useTranslations();
+
   if (!data || data.length === 0) {
     return (
       <div className="flex h-full items-center justify-center text-gray-400">
-        No Data
+        {t("Dashboard.chart.noData")}
       </div>
     );
   }
 
-  const formatStatusName = (name: string) => {
-    return name
-      .replace(/_/g, " ")
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+  const getStatusName = (name: string) => {
+    return t(`Dashboard.status.${name}`);
   };
 
   return (
@@ -50,8 +50,8 @@ export default function StatusPieChart({ data }: StatusPieChartProps) {
           ))}
           <Tooltip
             formatter={(value: number, name: string) => [
-              `${value} Tasks`,
-              formatStatusName(name),
+              `${value} ${t("Dashboard.chart.tasks")}`,
+              getStatusName(name),
             ]}
             contentStyle={{
               borderRadius: "8px",
@@ -63,7 +63,7 @@ export default function StatusPieChart({ data }: StatusPieChartProps) {
           <Legend
             verticalAlign="bottom"
             height={48}
-            formatter={formatStatusName}
+            formatter={getStatusName}
             iconType="circle"
           />
         </Pie>

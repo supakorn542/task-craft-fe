@@ -11,6 +11,7 @@ import { Form } from "antd";
 import CustomColorPicker from "@/app/components/ColorPickers/CustomColorPicker";
 import { FormInput } from "@/app/components/Input/FormInput";
 import { CustomButton } from "@/app/components/Buttons/CustomButton";
+import { useTranslations } from "next-intl";
 
 type TagRowProps = {
   tag: GetTagListResponseDto;
@@ -24,6 +25,7 @@ type EditTagForm = {
 };
 
 export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
+  const t = useTranslations();
   const [isEditing, setIsEditing] = useState(false);
 
   const { control, handleSubmit, reset } = useForm<EditTagForm>({
@@ -47,7 +49,7 @@ export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
 
   if (isEditing) {
     return (
-      <Form onFinish={handleSubmit(handleSave)} component="div">
+      <Form onFinish={handleSubmit(handleSave)}>
         <div className="flex flex-col md:flex-row w-full items-start md:items-center md:gap-3 p-3 border rounded-lg bg-white shadow-sm ring-2 ring-brand/20">
           <div className="flex flex-1 gap-3 w-full">
             <div className="shrink-0">
@@ -64,18 +66,18 @@ export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
 
           <div className="flex items-center justify-between w-full md:w-auto mt-2 md:mt-0 gap-4">
             <span className=" text-gray-400 whitespace-nowrap">
-              {tag._count?.tasks || 0} tasks
+              {t("Tags.row.tasks", { count: tag._count?.tasks || 0 })}
             </span>
 
             <div className="flex gap-2">
-              <Tooltip title="Cancel">
+              <Tooltip title={t("Tags.row.cancel")}>
                 <CustomButton
                   icon={<FaTimes />}
                   onClick={handleCancel}
                   variant="outline"
                 />
               </Tooltip>
-              <Tooltip title="Save">
+              <Tooltip title={t("Tags.row.save")}>
                 <CustomButton
                   icon={<FaSave />}
                   variant="primary"
@@ -88,7 +90,6 @@ export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
       </Form>
     );
   }
-
 
   return (
     <div className="flex items-center justify-between gap-3 p-3 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
@@ -105,7 +106,7 @@ export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
           <span className="text-xs md:text-sm text-gray-400 shrink-0">
             <span className="md:hidden">({tag._count?.tasks || 0})</span>
             <span className="hidden md:inline">
-              ({tag._count?.tasks || 0} tasks)
+              ({t("Tags.row.tasks", { count: tag._count?.tasks || 0 })})
             </span>
           </span>
         </div>

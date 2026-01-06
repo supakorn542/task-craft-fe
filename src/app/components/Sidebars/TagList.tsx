@@ -6,11 +6,14 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import React from "react";
 import clsx from "clsx";
 import { useTags } from "@/app/contexts/TagContext";
+import { useTranslations } from "next-intl";
 
 export default function TagList() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const t = useTranslations();
 
   const selectedTagId = searchParams.get("tagId");
 
@@ -35,7 +38,7 @@ export default function TagList() {
   return (
     <div className="mt-4">
       <h3 className="px-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-        Tags
+        {t("Sidebar.tags")}
       </h3>
 
       <ul className="mt-2 flex flex-col gap-1">
@@ -64,7 +67,7 @@ export default function TagList() {
           onClick={() => router.push("/settings/tags")}
           className="w-full text-left px-2 py-2 text-xs text-gray-500 hover:text-brand hover:bg-gray-50 rounded-lg transition-colors mt-1 cursor-pointer"
         >
-          + {remainingCount} more tags...
+          {t("Sidebar.moreTags", { count: remainingCount })}
         </button>
       )}
     </div>

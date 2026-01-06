@@ -8,6 +8,7 @@ import {
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
+import { useTranslations } from "next-intl";
 
 type TaskColumnProps = {
   tasks: GetTaskResponseDto[];
@@ -26,6 +27,8 @@ export default function TaskColumn({
   onDeleteTask,
   onEditTask,
 }: TaskColumnProps) {
+  const t = useTranslations();
+
   const { setNodeRef, isOver } = useDroppable({
     id: status,
   });
@@ -48,7 +51,7 @@ export default function TaskColumn({
       className={`
         flex flex-col w-full p-3 rounded-xl transition-colors duration-200
         overflow-y-auto overflow-x-hidden max-h-[75vh] scrollbar-none
-        min-w-[280px] min-h-[200px] snap-center 
+        min-w-[280px] min-h-[200px] snap-center
         ${
           isActiveColumn ? "bg-gray-100 ring-2 ring-gray-200" : "bg-transparent"
         }
@@ -73,7 +76,9 @@ export default function TaskColumn({
             />
           ))}
           {tasks.length === 0 && (
-            <div className="text-xs text-gray-400 italic">No tasks</div>
+            <div className="text-xs text-gray-400 italic">
+              {t("Tasks.column.noTasks")}
+            </div>
           )}
         </SortableContext>
 
@@ -81,7 +86,7 @@ export default function TaskColumn({
           onClick={onAddTask}
           className="w-full cursor-pointer rounded-md border border-dashed border-gray-300 py-2 text-center text-sm text-gray-500 hover:bg-gray-100"
         >
-          + Add Task
+          {t("Tasks.column.addTask")}
         </button>
       </div>
     </div>

@@ -7,6 +7,7 @@ import PageHeader from "@/app/components/PageHeader";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { Button, Card, Form, Input } from "antd";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,6 +18,7 @@ type ChangePasswordForm = {
 };
 
 export default function AccountPage() {
+  const t = useTranslations();
   const { user } = useAuth();
   const notification = useNotify();
   const [userName, setUserName] = useState(user?.userName || "");
@@ -34,10 +36,10 @@ export default function AccountPage() {
       await apiClient.user.userControllerUpdateProfile({
         userName,
       });
-      notification.showSuccess("Profile updated successfully");
+      notification.showSuccess(t("Account.profile.success"));
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to updated", e.body?.message);
+        notification.showError(t("Account.profile.error"), e.body?.message);
       }
     }
   };
@@ -50,38 +52,40 @@ export default function AccountPage() {
         oldPassword: values.oldPassword,
         newPassword: values.newPassword,
       });
-      notification.showSuccess("Password changed successfully");
+      notification.showSuccess(t("Account.security.success"));
       reset();
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to change password", e.body?.message);
+        notification.showError(t("Account.security.error"), e.body?.message);
       }
     }
   };
 
   return (
     <div className="flex flex-col gap-4 py-4 px-4 md:px-0 md:pr-4 min-h-screen">
-      <PageHeader text={"Account"} />
+      <PageHeader text={t("Account.title")} />
       <section>
-        <h3 className="text-md md:text-lg font-semibold mb-4 text-gray-700">Profile</h3>
+        <h3 className="text-md md:text-lg font-semibold mb-4 text-gray-700">
+          {t("Account.profile.title")}
+        </h3>
         <Card className="shadow-sm">
           <div className="flex flex-col gap-4">
             <div>
-              <label>Email</label>
+              <label>{t("Account.profile.email")}</label>
 
               <Input value={user?.email} disabled />
             </div>
             <div>
-              <label>Display Name</label>
+              <label>{t("Account.profile.displayName")}</label>
 
               <div className="flex gap-2">
                 <Input
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Set your display name"
+                  placeholder={t("Account.profile.placeholder")}
                 />
                 <CustomButton variant="primary" onClick={handleUpdateProfile}>
-                  Save
+                  {t("Account.profile.save")}
                 </CustomButton>
               </div>
             </div>
@@ -89,16 +93,20 @@ export default function AccountPage() {
         </Card>
       </section>
       <section>
-        <h3 className="text-md md:text-lg font-semibold mb-4 text-gray-700">Security</h3>
+        <h3 className="text-md md:text-lg font-semibold mb-4 text-gray-700">
+          {t("Account.security.title")}
+        </h3>
         <Card className="shadow-sm">
           <Form layout="vertical" onFinish={handleSubmit(handleChangePassword)}>
             <FormInput
               control={control}
               name="oldPassword"
-              label="Current Password"
+              label={t("Account.security.currentPassword")}
               type="password"
-              placeholder="Enter current password"
-              rules={{ required: "Current password is required" }}
+              placeholder={t("Account.security.currentPlaceholder")}
+              rules={{
+                required: t("Account.security.validation.currentRequired"),
+              }}
             />
 
             <div className="flex flex-col md:flex-row gap-4">
@@ -106,14 +114,14 @@ export default function AccountPage() {
                 <FormInput
                   control={control}
                   name="newPassword"
-                  label="New Password"
+                  label={t("Account.security.newPassword")}
                   type="password"
-                  placeholder="New password"
+                  placeholder={t("Account.security.newPlaceholder")}
                   rules={{
-                    required: "New password is required",
+                    required: t("Account.security.validation.newRequired"),
                     minLength: {
                       value: 6,
-                      message: "Min 6 characters",
+                      message: t("Account.security.validation.min"),
                     },
                   }}
                 />
@@ -123,14 +131,14 @@ export default function AccountPage() {
                 <FormInput
                   control={control}
                   name="confirmPassword"
-                  label="Confirm Password"
+                  label={t("Account.security.confirmPassword")}
                   type="password"
-                  placeholder="Confirm new password"
+                  placeholder={t("Account.security.confirmPlaceholder")}
                   rules={{
-                    required: "Confirm password is required",
-
+                    required: t("Account.security.validation.confirmRequired"),
                     validate: (value) =>
-                      value === newPasswordValue || "Passwords do not match!",
+                      value === newPasswordValue ||
+                      t("Account.security.validation.mismatch"),
                   }}
                 />
               </div>
@@ -138,7 +146,7 @@ export default function AccountPage() {
 
             <div className="flex justify-end mt-2">
               <CustomButton variant="primary" htmlType="submit">
-                Update Password
+                {t("Account.security.updateButton")}
               </CustomButton>
             </div>
           </Form>

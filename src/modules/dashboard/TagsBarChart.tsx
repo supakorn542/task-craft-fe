@@ -1,4 +1,5 @@
 import { DashboardBarChartResponseDto } from "@/api/generated";
+import { useTranslations } from "next-intl";
 import React from "react";
 import {
   BarChart,
@@ -17,11 +18,12 @@ type TagsBarChartProps = {
 };
 
 export default function TagsBarChart({ data }: TagsBarChartProps) {
+  const t = useTranslations();
 
   if (!data || data.length === 0) {
     return (
       <div className="flex h-full items-center justify-center text-gray-400">
-        No Data
+        {t("Dashboard.chart.noData")}
       </div>
     );
   }
@@ -49,7 +51,7 @@ export default function TagsBarChart({ data }: TagsBarChartProps) {
 
         <Tooltip
           cursor={{ fill: "transparent" }}
-          formatter={(value: number) => [`${value} Tasks`, "Count"]}
+          formatter={(value: number) => [`${value} ${t("Dashboard.chart.tasks")}`, t("Dashboard.chart.count")]}
           contentStyle={{
             borderRadius: "8px",
             border: "none",

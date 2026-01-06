@@ -7,21 +7,24 @@ import { FaTasks } from "react-icons/fa";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function MenuList() {
+  const t = useTranslations();
+
   return (
     <div>
       <ul className="flex flex-col gap-2 ">
-        <Link href="/" className=" w-full">
+        <Link href="/dashboard" className=" w-full">
           <div
             className="
               flex items-center gap-2 p-2 rounded-lg text-sm cursor-pointer transition-colors
-              text-text-secondary 
-              hover:bg-brand-hover 
+              text-text-secondary
+              hover:bg-brand-hover
             "
           >
             <LuLayoutDashboard />
-            <h3>Dashboard</h3>
+            <h3>{t("Sidebar.dashboard")}</h3>
           </div>
         </Link>
 
@@ -29,12 +32,12 @@ export default function MenuList() {
           <div
             className="
               flex items-center gap-2 p-2 rounded-lg text-sm cursor-pointer transition-colors
-              text-text-secondary 
-              hover:bg-brand-hover 
+              text-text-secondary
+              hover:bg-brand-hover
             "
           >
             <FaTasks />
-            <h3>Tasks</h3>
+            <h3>{t("Sidebar.tasks")}</h3>
           </div>
         </Link>
 
@@ -42,12 +45,12 @@ export default function MenuList() {
           <div
             className="
               flex items-center gap-2 p-2 rounded-lg text-sm cursor-pointer transition-colors
-              text-text-secondary 
-              hover:bg-brand-hover 
+              text-text-secondary
+              hover:bg-brand-hover
             "
           >
             <FaRegCalendarAlt />
-            <h3>Calendar</h3>
+            <h3>{t("Sidebar.calendar")}</h3>
           </div>
         </Link>
       </ul>

@@ -1,5 +1,303 @@
 {
-  "TasksPage":{
-    "title": "My Task"
+  "Common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "viewAll": "View All"
+  },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "tasks": "Tasks",
+    "myTask": "My Task",
+    "calendar": "Calendar",
+    "tags": "Tags",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "logout": "Log out",
+    "thai": "Thai",
+    "english": "English",
+    "moreTags": "+ {count} more tags..."
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "section": {
+      "weeklyProductivity": "Weekly Productivity",
+      "tasksByStatus": "Tasks by Status",
+      "tasksByTags": "Tasks by Tags",
+      "recentActivities": "Recent Activities"
+    },
+    "summary": {
+      "total": "Total Tasks",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "overdue": "Overdue"
+    },
+    "chart": {
+      "noData": "No Data",
+      "tasks": "Tasks",
+      "count": "Count"
+    },
+    "activity": {
+      "empty": "No recent activities",
+      "updated": "Updated"
+    },
+    "status": {
+      "TO_DO": "To Do",
+      "IN_PROGRESS": "In Progress",
+      "DONE": "Completed"
+    },
+    "error": "Failed to load dashboard data"
+  },
+  "Tasks": {
+    "title": "My Tasks",
+    "searchPlaceholder": "Search tasks...",
+    "filterTags": "Filter by Tags",
+    "filter": {
+      "All": "All",
+      "Today": "Today",
+      "Upcoming": "Upcoming"
+    },
+    "sort": {
+      "newest": "Newest Created",
+      "oldest": "Oldest Created",
+      "dueNear": "Due Date (Near)",
+      "dueFar": "Due Date (Far)"
+    },
+    "status": {
+      "TO_DO": "To Do",
+      "IN_PROGRESS": "In Progress",
+      "DONE": "Done"
+    },
+    "column": {
+      "addTask": "+ Add Task",
+      "noTasks": "No tasks"
+    },
+    "card": {
+      "noDueDate": "No due date",
+      "delete": "Delete"
+    },
+    "modal": {
+      "addTitle": "Add New Task",
+      "editTitle": "Edit Task",
+      "labels": {
+        "title": "Title",
+        "description": "Description",
+        "tags": "Tags",
+        "status": "Status",
+        "dueDate": "Due Date"
+      },
+      "placeholders": {
+        "tags": "Select or create tags"
+      },
+      "validation": {
+        "titleRequired": "Title is required"
+      },
+      "buttons": {
+        "create": "Create Task",
+        "update": "Update Task"
+      },
+      "messages": {
+        "createSuccess": "Task created successfully",
+        "updateSuccess": "Task updated successfully",
+        "error": "Operation failed"
+      }
+    },
+    "deleteModal": {
+      "title": "Delete Task?",
+      "message": "Are you sure you want to delete task <b>{title}</b>?",
+      "warning": "This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel",
+      "success": "Task deleted successfully",
+      "error": "Failed to delete task"
+    }
+  },
+  "Calendar": {
+    "title": "Calendar",
+    "more": "+ {count} more",
+    "error": {
+      "fetchTask": "Failed to get task",
+      "fetchList": "Failed to get task list"
+    }
+  },
+  "Settings": {
+    "title": "Settings",
+    "menu": {
+      "account": {
+        "title": "Account",
+        "description": "Manage your password and account security."
+      },
+      "tags": {
+        "title": "Manage Tags",
+        "description": "Organize, edit, and delete your tags."
+      }
+    }
+  },
+  "Account": {
+    "title": "Account",
+    "profile": {
+      "title": "Profile",
+      "email": "Email",
+      "displayName": "Display Name",
+      "placeholder": "Set your display name",
+      "save": "Save",
+      "success": "Profile updated successfully",
+      "error": "Failed to update profile"
+    },
+    "security": {
+      "title": "Security",
+      "currentPassword": "Current Password",
+      "currentPlaceholder": "Enter current password",
+      "newPassword": "New Password",
+      "newPlaceholder": "New password",
+      "confirmPassword": "Confirm Password",
+      "confirmPlaceholder": "Confirm new password",
+      "updateButton": "Update Password",
+      "success": "Password changed successfully",
+      "error": "Failed to change password",
+      "validation": {
+        "currentRequired": "Current password is required",
+        "newRequired": "New password is required",
+        "min": "Min 6 characters",
+        "confirmRequired": "Confirm password is required",
+        "mismatch": "Passwords do not match!"
+      }
+    }
+  },
+  "Tags": {
+    "title": "Manage Tags",
+    "createButton": "+ Create New Tag",
+    "form": {
+      "placeholder": "New tag name",
+      "required": "Name is required",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "row": {
+      "tasks": "{count} tasks",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "deleteModal": {
+      "title": "Delete Tag?",
+      "message": "Are you sure you want to delete <b>{name}</b>? This tag is used in <b>{count}</b> tasks and will be removed from all of them.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "notifications": {
+      "fetchError": "Failed to fetch tags",
+      "createSuccess": "Tag {name} created successfully",
+      "createError": "Failed to create tag",
+      "deleteSuccess": "Tag \"{name}\" deleted successfully",
+      "deleteError": "Failed to delete tag",
+      "updateSuccess": "Tag updated successfully",
+      "updateError": "Failed to update tag"
+    }
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "taskDueTitle": "Task Due Today",
+    "taskDueMessage": "Task \"{taskName}\" is due today",
+    "failedToLoad": "Failed to load notifications",
+    "actionFailed": "Action failed"
+  },
+  "Login": {
+    "title": "Welcome Back",
+    "subtitle": "Please enter your details to sign in",
+    "form": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter password",
+      "submitButton": "Sign In",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required"
+    },
+    "notifications": {
+      "loginFailed": "Login failed"
+    }
+  },
+  "Register": {
+    "title": "Create an Account",
+    "subtitle": "Start organizing your tasks with Task Craft today.",
+    "alreadyAccount": "Already have an account?",
+    "login": "Login",
+    "form": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "john@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Min 6 characters",
+      "confirmLabel": "Confirm Password",
+      "confirmPlaceholder": "Re-enter password",
+      "submitButton": "Create Account"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 6 characters",
+      "confirmRequired": "Please confirm your password",
+      "mismatch": "Your passwords do not match"
+    },
+    "notifications": {
+      "success": "Account created successfully!",
+      "error": "Registration failed"
+    }
+  },
+  "ForgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Enter your email to receive a password reset link.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "john@example.com",
+    "submitButton": "Send Reset Link",
+    "backToLogin": "Back to Login",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address"
+    },
+    "notifications": {
+      "success": "If your email is registered, you will receive a reset link shortly.",
+      "error": "Something went wrong, please try again."
+    }
+  },
+  "ResetPassword": {
+    "title": "Set New Password",
+    "form": {
+      "newPasswordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "submitButton": "Reset Password"
+    },
+    "validation": {
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 6 characters",
+      "confirmRequired": "Please confirm your password",
+      "mismatch": "Passwords do not match"
+    },
+    "notifications": {
+      "invalidLinkTitle": "Invalid link",
+      "missingToken": "Missing reset token.",
+      "success": "Password reset successfully! Please login.",
+      "failedTitle": "Reset Failed",
+      "failedMessage": "Invalid or expired token"
+    }
+  },
+  "Auth": {
+    "notifications": {
+      "loginSuccessTitle": "Login successful",
+      "loginSuccessMessage": "Welcome back!",
+      "logoutSuccessTitle": "Logged out",
+      "logoutSuccessMessage": "See you soon!",
+      "logoutFailed": "Logout failed"
+    }
   }
 }

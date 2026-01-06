@@ -8,12 +8,15 @@ import { CustomButton } from "@/app/components/Buttons/CustomButton";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { apiClient } from "@/api";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type ForgotFormValues = {
   email: string;
 };
 
 export default function ForgotPasswordPage() {
+  const t = useTranslations();
+
   const {
     control,
     handleSubmit,
@@ -28,21 +31,17 @@ export default function ForgotPasswordPage() {
     try {
       await apiClient.auth.authControllerForgotPassword(data);
 
-      notification.showSuccess(
-        "If your email is registered, you will receive a reset link shortly."
-      );
+      notification.showSuccess(t("ForgotPassword.notifications.success"));
     } catch (e) {
-      notification.showError("Something went wrong, please try again.");
+      notification.showError(t("ForgotPassword.notifications.error"));
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-2xl font-bold text-center mb-2">Forgot Password</h1>
-        <p className="text-gray-500 text-center mb-6">
-          Enter your email to receive a password reset link.
-        </p>
+        <h1 className="text-2xl font-bold text-center mb-2">{t("ForgotPassword.title")}</h1>
+        <p className="text-gray-500 text-center mb-6">{t("ForgotPassword.subtitle")}</p>
 
         <Form
           layout="vertical"
@@ -52,14 +51,14 @@ export default function ForgotPasswordPage() {
           <FormInput<ForgotFormValues>
             name="email"
             control={control}
-            label="Email"
-            placeholder="john@example.com"
+            label={t("ForgotPassword.emailLabel")}
+            placeholder={t("ForgotPassword.emailPlaceholder")}
             type="email"
             rules={{
-              required: "Email is required",
+              required: t("ForgotPassword.validation.emailRequired"),
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
+                message: t("ForgotPassword.validation.emailInvalid"),
               },
             }}
           />
@@ -70,13 +69,13 @@ export default function ForgotPasswordPage() {
             className="w-full"
             loading={isSubmitting}
           >
-            Send Reset Link
+            {t("ForgotPassword.submitButton")}
           </CustomButton>
         </Form>
 
         <div className="mt-4 text-center">
           <Link href="/login" className="text-text-secondary hover:underline">
-            Back to Login
+            {t("ForgotPassword.backToLogin")}
           </Link>
         </div>
       </div>

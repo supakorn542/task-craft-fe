@@ -11,6 +11,7 @@ import {
 import { apiClient } from "@/api";
 import { ApiError, UserDto } from "@/api/generated";
 import { useNotify } from "./NotificationContext";
+import { useTranslations } from "next-intl";
 
 type AuthContextProps = {
   user: UserDto | null;
@@ -24,6 +25,7 @@ type AuthContextProps = {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const t = useTranslations();
   const [user, setUser] = useState<UserDto | null>(null);
   const [authPending, setAuthPending] = useState(true);
   const notification = useNotify();
@@ -46,7 +48,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await apiClient.auth.authControllerLogin({ email, password });
       await getUser();
-      notification?.showSuccess("Login successful", "Welcome back!");
+
+      notification?.showSuccess(
+        t("Auth.notifications.loginSuccessTitle"),
+        t("Auth.notifications.loginSuccessMessage")
+      );
     } catch (e) {
       throw e;
     }
@@ -57,10 +63,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await apiClient.auth.authControllerLogout();
       setUser(null);
 
-      notification?.showSuccess("Logged out", "See you soon!");
+      notification?.showSuccess(
+        t("Auth.notifications.logoutSuccessTitle"),
+        t("Auth.notifications.logoutSuccessMessage")
+      );
     } catch (e) {
       if (e instanceof ApiError) {
-        notification?.showError("Logout failed", e.body?.message);
+        notification?.showError(
+          t("Auth.notifications.logoutFailed"),
+          e.body?.message
+        );
       }
     }
   };

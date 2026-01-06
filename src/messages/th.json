@@ -1,5 +1,303 @@
 {
-  "TasksPage":{
-    "title": "งานของฉัน"
+  "Common": {
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "viewAll": "ดูทั้งหมด"
+  },
+  "Sidebar": {
+    "dashboard": "แดชบอร์ด",
+    "tasks": "งานของฉัน",
+    "myTask": "งานของฉัน",
+    "calendar": "ปฏิทิน",
+    "tags": "แท็ก",
+    "notifications": "การแจ้งเตือน",
+    "settings": "ตั้งค่า",
+    "logout": "ออกจากระบบ",
+    "thai": "ไทย",
+    "english": "อังกฤษ",
+    "moreTags": "+ {count} แท็กเพิ่มเติม ..."
+  },
+  "Dashboard": {
+    "title": "แดชบอร์ด",
+    "section": {
+      "weeklyProductivity": "ประสิทธิภาพรายสัปดาห์",
+      "tasksByStatus": "งานแบ่งตามสถานะ",
+      "tasksByTags": "งานแบ่งตามแท็ก",
+      "recentActivities": "กิจกรรมล่าสุด"
+    },
+    "summary": {
+      "total": "งานทั้งหมด",
+      "inProgress": "กำลังทำ",
+      "completed": "เสร็จสิ้น",
+      "overdue": "เกินกำหนด"
+    },
+    "chart": {
+      "noData": "ไม่มีข้อมูล",
+      "tasks": "งาน",
+      "count": "จำนวน"
+    },
+    "activity": {
+      "empty": "ไม่มีกิจกรรมล่าสุด",
+      "updated": "อัปเดตเมื่อ"
+    },
+    "status": {
+      "TO_DO": "สิ่งที่ต้องทำ",
+      "IN_PROGRESS": "กำลังทำ",
+      "DONE": "เสร็จสิ้น"
+    },
+    "error": "โหลดข้อมูลแดชบอร์ดไม่สำเร็จ"
+  },
+  "Tasks": {
+    "title": "งานของฉัน",
+    "searchPlaceholder": "ค้นหางาน...",
+    "filterTags": "กรองตามแท็ก",
+    "filter": {
+      "All": "ทั้งหมด",
+      "Today": "วันนี้",
+      "Upcoming": "เร็วๆ นี้"
+    },
+    "sort": {
+      "newest": "สร้างล่าสุด",
+      "oldest": "สร้างเก่าสุด",
+      "dueNear": "วันกำหนดส่ง (ใกล้ถึง)",
+      "dueFar": "วันกำหนดส่ง (ยังอีกนาน)"
+    },
+    "status": {
+      "TO_DO": "สิ่งที่ต้องทำ",
+      "IN_PROGRESS": "กำลังทำ",
+      "DONE": "เสร็จสิ้น"
+    },
+    "column": {
+      "addTask": "+ เพิ่มงาน",
+      "noTasks": "ไม่มีงานในสถานะนี้"
+    },
+    "card": {
+      "noDueDate": "ไม่ระบุวันส่ง",
+      "delete": "ลบงาน"
+    },
+    "modal": {
+      "addTitle": "เพิ่มงานใหม่",
+      "editTitle": "แก้ไขงาน",
+      "labels": {
+        "title": "หัวข้อ",
+        "description": "รายละเอียด",
+        "tags": "แท็ก",
+        "status": "สถานะ",
+        "dueDate": "วันกำหนดส่ง"
+      },
+      "placeholders": {
+        "tags": "เลือกหรือสร้างแท็ก"
+      },
+      "validation": {
+        "titleRequired": "กรุณาระบุหัวข้อ"
+      },
+      "buttons": {
+        "create": "สร้างงาน",
+        "update": "อัปเดตงาน"
+      },
+      "messages": {
+        "createSuccess": "สร้างงานสำเร็จ",
+        "updateSuccess": "อัปเดตงานสำเร็จ",
+        "error": "ดำเนินการไม่สำเร็จ"
+      }
+    },
+    "deleteModal": {
+      "title": "ยืนยันการลบ?",
+      "message": "คุณแน่ใจหรือไม่ที่จะลบงาน <b>{title}</b>?",
+      "warning": "การกระทำนี้ไม่สามารถย้อนกลับได้",
+      "confirm": "ลบ",
+      "cancel": "ยกเลิก",
+      "success": "ลบงานสำเร็จ",
+      "error": "ลบงานไม่สำเร็จ"
+    }
+  },
+  "Calendar": {
+    "title": "ปฏิทิน",
+    "more": "+ อีก {count} รายการ",
+    "error": {
+      "fetchTask": "ไม่สามารถดึงข้อมูลงานได้",
+      "fetchList": "ไม่สามารถดึงรายการงานได้"
+    }
+  },
+  "Settings": {
+    "title": "การตั้งค่า",
+    "menu": {
+      "account": {
+        "title": "บัญชีผู้ใช้",
+        "description": "จัดการรหัสผ่านและความปลอดภัยของบัญชี"
+      },
+      "tags": {
+        "title": "จัดการแท็ก",
+        "description": "จัดระเบียบ แก้ไข และลบแท็กของคุณ"
+      }
+    }
+  },
+  "Account": {
+    "title": "บัญชีผู้ใช้",
+    "profile": {
+      "title": "ข้อมูลส่วนตัว",
+      "email": "อีเมล",
+      "displayName": "ชื่อที่แสดง",
+      "placeholder": "ตั้งชื่อที่ต้องการแสดง",
+      "save": "บันทึก",
+      "success": "อัปเดตข้อมูลสำเร็จ",
+      "error": "ไม่สามารถอัปเดตข้อมูลได้"
+    },
+    "security": {
+      "title": "ความปลอดภัย",
+      "currentPassword": "รหัสผ่านปัจจุบัน",
+      "currentPlaceholder": "กรอกรหัสผ่านปัจจุบัน",
+      "newPassword": "รหัสผ่านใหม่",
+      "newPlaceholder": "กรอกรหัสผ่านใหม่",
+      "confirmPassword": "ยืนยันรหัสผ่าน",
+      "confirmPlaceholder": "กรอกรหัสผ่านใหม่อีกครั้ง",
+      "updateButton": "อัปเดตรหัสผ่าน",
+      "success": "เปลี่ยนรหัสผ่านสำเร็จ",
+      "error": "ไม่สามารถเปลี่ยนรหัสผ่านได้",
+      "validation": {
+        "currentRequired": "กรุณากรอกรหัสผ่านปัจจุบัน",
+        "newRequired": "กรุณากรอกรหัสผ่านใหม่",
+        "min": "ต้องมีความยาวอย่างน้อย 6 ตัวอักษร",
+        "confirmRequired": "กรุณายืนยันรหัสผ่าน",
+        "mismatch": "รหัสผ่านไม่ตรงกัน"
+      }
+    }
+  },
+  "Tags": {
+    "title": "จัดการแท็ก",
+    "createButton": "+ สร้างแท็กใหม่",
+    "form": {
+      "placeholder": "ชื่อแท็กใหม่",
+      "required": "กรุณาระบุชื่อแท็ก",
+      "cancel": "ยกเลิก",
+      "save": "บันทึก"
+    },
+    "row": {
+      "tasks": "{count} งาน",
+      "cancel": "ยกเลิก",
+      "save": "บันทึก"
+    },
+    "deleteModal": {
+      "title": "ลบแท็ก?",
+      "message": "คุณแน่ใจหรือไม่ที่จะลบแท็ก <b>{name}</b>? แท็กนี้ถูกใช้อยู่ในงาน <b>{count}</b> งาน และจะถูกลบออกจากงานทั้งหมด",
+      "confirm": "ลบ",
+      "cancel": "ยกเลิก"
+    },
+    "notifications": {
+      "fetchError": "โหลดข้อมูลแท็กไม่สำเร็จ",
+      "createSuccess": "สร้างแท็ก {name} สำเร็จ",
+      "createError": "สร้างแท็กไม่สำเร็จ",
+      "deleteSuccess": "ลบแท็ก \"{name}\" สำเร็จ",
+      "deleteError": "ลบแท็กไม่สำเร็จ",
+      "updateSuccess": "อัปเดตแท็กสำเร็จ",
+      "updateError": "อัปเดตแท็กไม่สำเร็จ"
+    }
+  },
+  "Notifications": {
+    "title": "การแจ้งเตือน",
+    "empty": "ไม่มีการแจ้งเตือน",
+    "taskDueTitle": "แจ้งเตือนงานวันนี้",
+    "taskDueMessage": "งาน \"{taskName}\" ต้องส่งวันนี้",
+    "failedToLoad": "โหลดข้อมูลไม่สำเร็จ",
+    "actionFailed": "ดำเนินการไม่สำเร็จ"
+  },
+  "Login": {
+    "title": "ยินดีต้อนรับกลับ",
+    "subtitle": "กรุณากรอกข้อมูลเพื่อเข้าสู่ระบบ",
+    "form": {
+      "emailLabel": "อีเมล",
+      "emailPlaceholder": "กรอกอีเมล",
+      "passwordLabel": "รหัสผ่าน",
+      "passwordPlaceholder": "กรอกรหัสผ่าน",
+      "submitButton": "เข้าสู่ระบบ",
+      "forgotPassword": "ลืมรหัสผ่าน?",
+      "noAccount": "ยังไม่มีบัญชีใช่ไหม?",
+      "register": "สมัครสมาชิก"
+    },
+    "validation": {
+      "emailRequired": "กรุณากรอกอีเมล",
+      "passwordRequired": "กรุณากรอกรหัสผ่าน"
+    },
+    "notifications": {
+      "loginFailed": "เข้าสู่ระบบไม่สำเร็จ"
+    }
+  },
+  "Register": {
+    "title": "สร้างบัญชีผู้ใช้",
+    "subtitle": "เริ่มจัดการงานของคุณด้วย Task Craft วันนี้",
+    "alreadyAccount": "มีบัญชีอยู่แล้ว?",
+    "login": "เข้าสู่ระบบ",
+    "form": {
+      "emailLabel": "อีเมล",
+      "emailPlaceholder": "john@example.com",
+      "passwordLabel": "รหัสผ่าน",
+      "passwordPlaceholder": "อย่างน้อย 6 ตัวอักษร",
+      "confirmLabel": "ยืนยันรหัสผ่าน",
+      "confirmPlaceholder": "กรอกรหัสผ่านอีกครั้ง",
+      "submitButton": "สร้างบัญชี"
+    },
+    "validation": {
+      "emailRequired": "กรุณากรอกอีเมล",
+      "emailInvalid": "รูปแบบอีเมลไม่ถูกต้อง",
+      "passwordRequired": "กรุณากรอกรหัสผ่าน",
+      "passwordMin": "รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร",
+      "confirmRequired": "กรุณายืนยันรหัสผ่าน",
+      "mismatch": "รหัสผ่านไม่ตรงกัน"
+    },
+    "notifications": {
+      "success": "สร้างบัญชีสำเร็จ!",
+      "error": "การลงทะเบียนล้มเหลว"
+    }
+  },
+  "ForgotPassword": {
+    "title": "ลืมรหัสผ่าน",
+    "subtitle": "กรอกอีเมลของคุณเพื่อรับลิงก์สำหรับตั้งค่ารหัสผ่านใหม่",
+    "emailLabel": "อีเมล",
+    "emailPlaceholder": "john@example.com",
+    "submitButton": "ส่งลิงก์รีเซ็ต",
+    "backToLogin": "กลับไปหน้าเข้าสู่ระบบ",
+    "validation": {
+      "emailRequired": "กรุณากรอกอีเมล",
+      "emailInvalid": "รูปแบบอีเมลไม่ถูกต้อง"
+    },
+    "notifications": {
+      "success": "หากอีเมลนี้มีอยู่ในระบบ คุณจะได้รับลิงก์รีเซ็ตรหัสผ่านในไม่ช้า",
+      "error": "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"
+    }
+  },
+  "ResetPassword": {
+    "title": "ตั้งรหัสผ่านใหม่",
+    "form": {
+      "newPasswordLabel": "รหัสผ่านใหม่",
+      "confirmPasswordLabel": "ยืนยันรหัสผ่าน",
+      "submitButton": "รีเซ็ตรหัสผ่าน"
+    },
+    "validation": {
+      "passwordRequired": "กรุณากรอกรหัสผ่าน",
+      "passwordMin": "รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร",
+      "confirmRequired": "กรุณายืนยันรหัสผ่าน",
+      "mismatch": "รหัสผ่านไม่ตรงกัน"
+    },
+    "notifications": {
+      "invalidLinkTitle": "ลิงก์ไม่ถูกต้อง",
+      "missingToken": "ไม่พบโทเคนสำหรับการรีเซ็ต",
+      "success": "รีเซ็ตรหัสผ่านสำเร็จ! กรุณาเข้าสู่ระบบ",
+      "failedTitle": "รีเซ็ตไม่สำเร็จ",
+      "failedMessage": "โทเคนไม่ถูกต้องหรือหมดอายุ"
+    }
+  },
+  "Auth": {
+    "notifications": {
+      "loginSuccessTitle": "เข้าสู่ระบบสำเร็จ",
+      "loginSuccessMessage": "ยินดีต้อนรับกลับมา!",
+      "logoutSuccessTitle": "ออกจากระบบแล้ว",
+      "logoutSuccessMessage": "ไว้เจอกันใหม่นะ!",
+      "logoutFailed": "ออกจากระบบไม่สำเร็จ"
+    }
   }
 }

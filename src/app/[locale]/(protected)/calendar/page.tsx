@@ -15,8 +15,10 @@ import { apiClient } from "@/api";
 import dayjs from "dayjs";
 import TaskModal from "@/modules/tasks/TaskModal";
 import { Popover } from "antd";
+import { useTranslations } from "next-intl";
 
 export default function TaskCalendar() {
+  const t = useTranslations();
   const [taskList, setTaskList] = useState<GetTaskResponseDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] =
@@ -38,7 +40,7 @@ export default function TaskCalendar() {
       setIsModalOpen(true);
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to get task ", e.body?.message);
+        notification.showError(t("Calendar.error.fetchTask"), e.body?.message);
       }
     }
   };
@@ -77,7 +79,7 @@ export default function TaskCalendar() {
       setTaskList(res.tasks);
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Failed to get task list ", e.body?.message);
+        notification.showError(t("Calendar.error.fetchList"), e.body?.message);
       }
     } finally {
       setIsLoading(false);
@@ -184,7 +186,7 @@ export default function TaskCalendar() {
                   e.stopPropagation();
                 }}
               >
-                + {remainingCount} more
+                {t("Calendar.more", { count: remainingCount })}
               </li>
             </Popover>
           )}
@@ -207,7 +209,7 @@ export default function TaskCalendar() {
     <>
       <div className="flex flex-col gap-2 py-4 pr-2 md:pr-4 h-screen overflow-hidden">
         <div className="flex-shrink-0">
-          <PageHeader text="Calendar" />
+          <PageHeader text={t("Calendar.title")} />
         </div>
 
         <div className="flex-1 overflow-y-auto bg-bg-base rounded-xl shadow-xl p-2 md:p-6 scrollbar-thin border border-gray-100">

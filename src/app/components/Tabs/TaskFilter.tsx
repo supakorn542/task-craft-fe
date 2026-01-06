@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 
 type TaskFilterProps = {
@@ -7,6 +8,7 @@ type TaskFilterProps = {
 };
 
 export default function TaskFilter({ active, onChange }: TaskFilterProps) {
+  const t = useTranslations();
   const filters = ["All", "Today", "Upcoming"] as const;
 
   return (
@@ -22,7 +24,7 @@ export default function TaskFilter({ active, onChange }: TaskFilterProps) {
               : "text-gray-500 hover:text-gray-800"
           )}
         >
-          {f}
+          {t(`Tasks.filter.${f}`)}
         </button>
       ))}
     </div>

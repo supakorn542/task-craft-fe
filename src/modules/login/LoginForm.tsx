@@ -9,6 +9,7 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import { CustomButton } from "@/app/components/Buttons/CustomButton";
 import { Link } from "@/i18n/navigation";
 import { getErrorMessage } from "@/utils/error";
+import { useTranslations } from "next-intl";
 
 type LoginFormValues = {
   email: string;
@@ -16,6 +17,8 @@ type LoginFormValues = {
 };
 
 export default function LoginForm() {
+  const t = useTranslations();
+
   const {
     control,
     handleSubmit,
@@ -42,20 +45,20 @@ export default function LoginForm() {
       <FormInput<LoginFormValues>
         name="email"
         control={control}
-        label="Email"
-        placeholder="Enter email"
+        label={t("Login.form.emailLabel")}
+        placeholder={t("Login.form.emailPlaceholder")}
         type="email"
-        rules={{ required: "Email is required" }}
+        rules={{ required: t("Login.validation.emailRequired") }}
       />
 
       <div className="relative">
         <FormInput<LoginFormValues>
           name="password"
           control={control}
-          label="Password"
-          placeholder="Enter password"
+          label={t("Login.form.passwordLabel")}
+          placeholder={t("Login.form.passwordPlaceholder")}
           type="password"
-          rules={{ required: "Password is required" }}
+          rules={{ required: t("Login.validation.passwordRequired") }}
         />
 
         <div className="flex justify-end -mt-4 mb-4">
@@ -63,7 +66,7 @@ export default function LoginForm() {
             href="/forgot-password"
             className="text-xs text-brand hover:underline font-medium"
           >
-            Forgot password?
+            {t("Login.form.forgotPassword")}
           </Link>
         </div>
       </div>
@@ -74,16 +77,16 @@ export default function LoginForm() {
         loading={isSubmitting}
         className="w-full mt-2"
       >
-        Login
+        {t("Login.form.submitButton")}
       </CustomButton>
 
       <div className="mt-4 text-center text-sm text-gray-500">
-        Don&apos;t have an account?{" "}
+        {t("Login.form.noAccount")}{" "}
         <Link
           href="/register"
           className="font-semibold text-brand hover:underline"
         >
-          Sign up
+          {t("Login.form.register")}
         </Link>
       </div>
     </Form>

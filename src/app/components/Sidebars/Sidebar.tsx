@@ -6,17 +6,20 @@ import { Button, Drawer } from "antd";
 import SidebarContent from "./SidebarContent";
 import { usePathname } from "@/i18n/navigation";
 import NotificationBell from "./NotificationBell";
+import { useTranslations } from "next-intl";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  const t = useTranslations();
+
   const getMobileTitle = () => {
-    if (pathname === "/" || pathname === "/dashboard") return "Dashboard";
-    if (pathname.includes("/tasks")) return "My Task";
-    if (pathname.includes("/calendar")) return "Calendar";
-    if (pathname.includes("/settings")) return "Settings";
-    if (pathname.includes("/notifications")) return "Notifications";
+    if (pathname === "/" || pathname === "/dashboard") return t('Sidebar.dashboard');
+    if (pathname.includes("/tasks")) return t('Sidebar.myTask');
+    if (pathname.includes("/calendar")) return t('Sidebar.calendar');
+    if (pathname.includes("/settings")) return t('Sidebar.settings');
+    if (pathname.includes("/notifications")) return t('Sidebar.notifications');
     return "Task Craft";
   };
 

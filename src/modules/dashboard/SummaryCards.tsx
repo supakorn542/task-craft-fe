@@ -9,6 +9,7 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 import { DashboardSummaryResponseDto } from "@/api/generated";
+import { useTranslations } from "next-intl";
 
 type SummaryCardsProps = {
   data?: DashboardSummaryResponseDto;
@@ -16,6 +17,7 @@ type SummaryCardsProps = {
 };
 
 export default function SummaryCards({ data, loading }: SummaryCardsProps) {
+  const t = useTranslations();
   const cardStyle = { backgroundColor: "#F9FAFB" };
   const bodyStyle = { padding: "12px 16px" };
 
@@ -30,7 +32,7 @@ export default function SummaryCards({ data, loading }: SummaryCardsProps) {
         <Statistic
           title={
             <span className="text-xs md:text-sm text-gray-500">
-              Total Tasks
+              {t("Dashboard.summary.total")}
             </span>
           }
           value={data?.total || 0}
@@ -48,7 +50,7 @@ export default function SummaryCards({ data, loading }: SummaryCardsProps) {
         <Statistic
           title={
             <span className="text-xs md:text-sm text-gray-500">
-              In Progress
+              {t("Dashboard.summary.inProgress")}
             </span>
           }
           value={data?.inProgress || 0}
@@ -65,7 +67,9 @@ export default function SummaryCards({ data, loading }: SummaryCardsProps) {
       >
         <Statistic
           title={
-            <span className="text-xs md:text-sm text-gray-500">Completed</span>
+            <span className="text-xs md:text-sm text-gray-500">
+              {t("Dashboard.summary.completed")}
+            </span>
           }
           value={data?.completed || 0}
           valueStyle={{ color: "#3f8600", fontSize: "18px", fontWeight: 600 }}
@@ -81,7 +85,9 @@ export default function SummaryCards({ data, loading }: SummaryCardsProps) {
       >
         <Statistic
           title={
-            <span className="text-xs md:text-sm text-gray-500">Overdue</span>
+            <span className="text-xs md:text-sm text-gray-500">
+              {t("Dashboard.summary.overdue")}
+            </span>
           }
           value={data?.overdue || 0}
           valueStyle={{ color: "#cf1322", fontSize: "18px", fontWeight: 600 }}

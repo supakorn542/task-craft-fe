@@ -9,6 +9,7 @@ import { useNotify } from "@/app/contexts/NotificationContext";
 import { apiClient } from "@/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ApiError } from "@/api/generated";
+import { useTranslations } from "next-intl";
 
 type ResetFormValues = {
   newPassword: string;
@@ -16,6 +17,7 @@ type ResetFormValues = {
 };
 
 export default function ResetPasswordPage() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const router = useRouter();
@@ -30,13 +32,15 @@ export default function ResetPasswordPage() {
     defaultValues: { newPassword: "", confirmPassword: "" },
   });
 
-
   useEffect(() => {
     if (!token) {
-      notification.showError("Invalid link", "Missing reset token.");
+      notification.showError(
+        t("ResetPassword.notifications.invalidLinkTitle"),
+        t("ResetPassword.notifications.missingToken")
+      );
       router.push("/login");
     }
-  }, [token, router, notification]);
+  }, [token, router, notification, t]);
 
   const handleReset = async (data: ResetFormValues) => {
     if (!token) return;
@@ -47,22 +51,26 @@ export default function ResetPasswordPage() {
         newPassword: data.newPassword,
       });
 
-      notification.showSuccess("Password reset successfully! Please login.");
+      notification.showSuccess(t("ResetPassword.notifications.success"));
       router.push("/login");
     } catch (e) {
       if (e instanceof ApiError) {
-
-        notification.showError("Reset Failed", e.body?.message || "Invalid or expired token");
+        notification.showError(
+          t("ResetPassword.notifications.failedTitle"),
+          e.body?.message || t("ResetPassword.notifications.failedMessage")
+        );
       }
     }
   };
 
-  if (!token) return null; 
+  if (!token) return null;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h1 className="text-2xl font-bold text-center mb-6">Set New Password</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">
+          {t("ResetPassword.title")}
+        </h1>
 
         <Form
           layout="vertical"
@@ -72,13 +80,13 @@ export default function ResetPasswordPage() {
           <FormInput<ResetFormValues>
             name="newPassword"
             control={control}
-            label="New Password"
+            label={t("ResetPassword.form.newPasswordLabel")}
             type="password"
             rules={{
-              required: "Password is required",
+              required: t("ResetPassword.validation.passwordRequired"),
               minLength: {
                 value: 6,
-                message: "Password must be at least 6 characters",
+                message: t("ResetPassword.validation.passwordMin"),
               },
             }}
           />
@@ -86,13 +94,13 @@ export default function ResetPasswordPage() {
           <FormInput<ResetFormValues>
             name="confirmPassword"
             control={control}
-            label="Confirm Password"
+            label={t("ResetPassword.form.confirmPasswordLabel")}
             type="password"
             rules={{
-              required: "Please confirm your password",
+              required: t("ResetPassword.validation.confirmRequired"),
               validate: (val: string) => {
                 if (watch("newPassword") != val) {
-                  return "Passwords do not match";
+                  return t("ResetPassword.validation.mismatch");
                 }
               },
             }}
@@ -104,7 +112,7 @@ export default function ResetPasswordPage() {
             className="w-full mt-2"
             loading={isSubmitting}
           >
-            Reset Password
+            {t("ResetPassword.form.submitButton")}
           </CustomButton>
         </Form>
       </div>

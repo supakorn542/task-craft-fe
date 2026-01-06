@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { TaskStatus } from "@/types/task";
 import { useTags } from "@/app/contexts/TagContext";
+import { useTranslations } from "next-intl";
 
 type TaskModalProps = {
   open: boolean;
@@ -40,6 +41,7 @@ export default function TaskModal({
   initialStatus,
   initialDate,
 }: TaskModalProps) {
+  const t = useTranslations();
   const notification = useNotify();
   const isEditMode = !!taskToEdit;
 
@@ -48,7 +50,7 @@ export default function TaskModal({
   const [tagList, setTagList] = useState<GetTagListResponseDto[]>([]);
 
   const statusOptions = Object.values(TaskStatus).map((status) => ({
-    label: status.replace("_", " "),
+    label: t(`Tasks.status.${status}`),
     value: status,
   }));
 
@@ -106,12 +108,12 @@ export default function TaskModal({
           taskToEdit.id,
           data as UpdateTaskRequestDto
         );
-        notification.showSuccess("Task updated successfully");
+        notification.showSuccess(t("Tasks.modal.messages.updateSuccess"));
       } else {
         await apiClient.task.taskControllerCreateTask(
           data as CreateTaskRequestDto
         );
-        notification.showSuccess("Task created successfully");
+        notification.showSuccess(t("Tasks.modal.messages.createSuccess"));
       }
 
       await refreshTags();
@@ -119,7 +121,7 @@ export default function TaskModal({
       onClose();
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Form submit feiled", e.body?.message);
+        notification.showError("Form submit failed", e.body?.message);
       }
     }
   };
@@ -127,7 +129,9 @@ export default function TaskModal({
   return (
     <CustomModal
       open={open}
-      title={isEditMode ? "Edit Task" : "Add New Task"}
+      title={
+        isEditMode ? t("Tasks.modal.editTitle") : t("Tasks.modal.addTitle")
+      }
       onClose={onClose}
       footer={null}
     >
@@ -140,15 +144,15 @@ export default function TaskModal({
           <FormInput<TaskFormData>
             control={control}
             name="title"
-            label="Title"
-            rules={{ required: "Title is required" }}
+            label={t("Tasks.modal.labels.title")}
+            rules={{ required: t("Tasks.modal.validation.titleRequired") }}
           />
         </div>
         <div>
           <TextAreaInput<TaskFormData>
             name="description"
             control={control}
-            label="Description"
+            label={t("Tasks.modal.labels.description")}
             rows={4}
             style={{ resize: "none" }}
           />
@@ -157,10 +161,10 @@ export default function TaskModal({
           <SelectInput<TaskFormData>
             name="tags"
             control={control}
-            label="Tags"
+            label={t("Tasks.modal.labels.tags")}
+            placeholder={t("Tasks.modal.placeholders.tags")}
             mode="tags"
             options={tagList.map((tag) => ({ label: tag.name, value: tag.id }))}
-            placeholder="Select or create tags"
             tokenSeparators={[","]}
           />
         </div>
@@ -168,7 +172,7 @@ export default function TaskModal({
           <SelectInput<TaskFormData>
             name="status"
             control={control}
-            label="Status"
+            label={t(`Tasks.modal.labels.status`)}
             options={statusOptions}
           />
         </div>
@@ -177,13 +181,15 @@ export default function TaskModal({
           <CustomDatePicker<TaskFormData>
             name="dueDate"
             control={control}
-            label="Due Date"
+            label={t("Tasks.modal.labels.dueDate")}
             style={{ width: "100%" }}
           />
         </div>
         <div className="flex justify-end">
           <CustomButton htmlType="submit" variant="primary">
-            {isEditMode ? "Update Task" : "Create Task"}
+            {isEditMode
+              ? t("Tasks.modal.buttons.update")
+              : t("Tasks.modal.buttons.create")}
           </CustomButton>
         </div>
       </Form>

@@ -12,6 +12,7 @@ import { useNotify } from "@/app/contexts/NotificationContext";
 import { getErrorMessage } from "@/utils/error";
 import NotificationItem from "./NotificationItem";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function NotificationBell() {
   const notification = useNotify();
@@ -19,6 +20,8 @@ export default function NotificationBell() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  const t = useTranslations();
 
   const [unreadCount, setUnreadCount] = useState<UnreadCountResponseDto>();
   const [notificationList, setNotificationList] = useState<
@@ -79,14 +82,14 @@ export default function NotificationBell() {
   const content = (
     <div className="flex flex-col w-80 max-h-[400px]">
       <div className="p-3 bg-white sticky top-0 z-10 flex justify-between items-center">
-        <h3 className="font-semibold text-gray-700 m-0">Notifications</h3>
+        <h3 className="font-semibold text-gray-700 m-0">{t('Sidebar.notifications')}</h3>
       </div>
 
       <div className="overflow-y-auto flex-1 rounded-lg">
         {loading ? (
-          <div className="p-8 text-center text-gray-400">Loading...</div>
+          <div className="p-8 text-center text-gray-400">{t('Common.loading')}</div>
         ) : notificationList.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">ไม่มีการแจ้งเตือน</div>
+          <div className="p-8 text-center text-gray-400">{t('Notifications.empty')}</div>
         ) : (
           notificationList.map((item) => (
             <NotificationItem
@@ -105,7 +108,7 @@ export default function NotificationBell() {
           onClick={() => router.push("/notifications")}
           className="text-xs text-brand hover:underline cursor-pointer"
         >
-          View All
+          {t('Common.viewAll')}
         </button>
       </div>
     </div>

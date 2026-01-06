@@ -19,11 +19,15 @@ import TagsBarChart from "@/modules/dashboard/TagsBarChart";
 import TrendAreaChart from "@/modules/dashboard/TrendAreaChart";
 import RecentActivityList from "@/modules/dashboard/RecentActivityList";
 import DashboardSkeleton from "@/app/components/Skeletons/DashboardSkeleton";
+import { useTranslations } from "next-intl";
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState<
     DashboardSummaryResponseDto | undefined
   >(undefined);
+
+  const t = useTranslations();
+
   const [pieData, setPieData] = useState<DashboardPieChartResponseDto[]>([]);
   const [barData, setBarData] = useState<DashboardBarChartResponseDto[]>([]);
   const [trendsData, setTrendsData] = useState<DashboardTrendResponseDto[]>([]);
@@ -64,7 +68,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex flex-col gap-4 md:gap-6 py-4 px-4 md:px-0 md:pr-4">
-        <PageHeader text="Dashboard" />
+        <PageHeader text={t("Dashboard.title")} />
         <DashboardSkeleton />
       </div>
     );
@@ -72,35 +76,35 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-4 md:gap-6 py-4 px-4 md:px-0 md:pr-4 ">
-      <PageHeader text="Dashboard" />
+      <PageHeader text={t("Dashboard.title")} />
 
       <SummaryCards data={summary} loading={loading} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <div className="col-span-1 md:col-span-2 h-64 md:h-80 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
           <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
-            Weekly Productivity
+            {t("Dashboard.section.weeklyProductivity")}
           </h3>
           <TrendAreaChart data={trendsData} />
         </div>
 
         <div className="h-64 md:h-80 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
           <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
-            Tasks by Status
+            {t("Dashboard.section.tasksByStatus")}
           </h3>
           <StatusPieChart data={pieData} />
         </div>
 
         <div className="h-64 md:h-80 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
           <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
-            Tasks by Tags
+            {t("Dashboard.section.tasksByTags")}
           </h3>
           <TagsBarChart data={barData} />
         </div>
 
         <div className="col-span-1 md:col-span-2 bg-bg-base rounded-xl shadow-sm p-4 md:p-6">
           <h3 className="text-base md:text-lg font-semibold text-gray-700 mb-2 md:mb-4">
-            Recent Activities
+            {t("Dashboard.section.recentActivities")}
           </h3>
 
           <div className="max-h-96 overflow-y-auto custom-scrollbar pr-1 md:pr-2">

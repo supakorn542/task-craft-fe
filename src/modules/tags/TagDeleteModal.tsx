@@ -2,6 +2,7 @@ import CustomModal from "@/app/components/Modals/CustomModal";
 import React from "react";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { GetTagListResponseDto } from "@/api/generated";
+import { useTranslations } from "next-intl";
 
 type TagDeleteModalProps = {
   data: GetTagListResponseDto | null;
@@ -16,6 +17,8 @@ export default function TagDeleteModal({
   onConfirm,
   loading,
 }: TagDeleteModalProps) {
+  const t = useTranslations();
+
   return (
     <CustomModal
       title="Delete Tag?"
@@ -30,9 +33,11 @@ export default function TagDeleteModal({
       <div className="flex items-center gap-4 py-4">
         <ExclamationCircleFilled className="text-red-500 text-3xl" />
         <p>
-          Are you sure you want to delete <b>{data?.name}</b>? This tag is used
-          in <b>{data?._count?.tasks || 0}</b> tasks and will be removed from
-          all of them.
+          {t.rich("Tags.deleteModal.message", {
+            name: data?.name || "",
+            count: data?._count?.tasks || 0,
+            b: (chunks) => <b>{chunks}</b>,
+          })}
         </p>
       </div>
     </CustomModal>

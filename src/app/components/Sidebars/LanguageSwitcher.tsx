@@ -3,10 +3,13 @@ import type { MenuProps } from "antd";
 import { Dropdown, Tooltip } from "antd";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { MdLanguage } from "react-icons/md";
+import { useTranslations } from "next-intl";
 
 export default function LanguageSwitcher() {
   const router = useRouter();
   const pathName = usePathname();
+
+  const t = useTranslations('Sidebar');
 
   const handleChangeLanguage: MenuProps["onClick"] = ({ key }) => {
     router.push(pathName, { locale: key });
@@ -15,11 +18,11 @@ export default function LanguageSwitcher() {
   const items: MenuProps["items"] = [
     {
       key: "en",
-      label: "English",
+      label: t('english'),
     },
     {
       key: "th",
-      label: "Thai",
+      label: t('thai'),
     },
   ];
 

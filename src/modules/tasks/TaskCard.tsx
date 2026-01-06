@@ -7,6 +7,7 @@ import { MoreOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
+import { useTranslations } from "next-intl";
 
 type TaskCardProps = {
   task: GetTaskResponseDto;
@@ -26,6 +27,8 @@ export default function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
     id: task.id,
   });
 
+  const t = useTranslations();
+
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
@@ -37,7 +40,7 @@ export default function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
   const items: MenuProps["items"] = [
     {
       key: "delete",
-      label: "Delete",
+      label: t("Tasks.card.delete"),
       icon: <DeleteOutlined />,
       danger: true,
       onClick: ({ domEvent }) => {
@@ -92,7 +95,7 @@ export default function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
                 month: "2-digit",
                 day: "2-digit",
               })
-            : "No due date"}
+            : t("Tasks.card.noDueDate")}
         </span>
       </div>
     </div>
@@ -100,6 +103,7 @@ export default function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
 }
 
 export function TaskCardOverlay({ task }: { task: GetTaskResponseDto }) {
+  const t = useTranslations();
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-xl cursor-grabbing opacity-90">
       <p className="text-sm font-medium">{task.title}</p>
@@ -121,7 +125,7 @@ export function TaskCardOverlay({ task }: { task: GetTaskResponseDto }) {
         <span>
           {task.dueDate
             ? new Date(task.dueDate).toLocaleDateString("en-GB")
-            : "No due date"}
+            : t("Tasks.card.noDueDate")}
         </span>
       </div>
     </div>

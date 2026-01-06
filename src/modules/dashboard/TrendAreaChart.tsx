@@ -1,4 +1,5 @@
 import { DashboardTrendResponseDto } from "@/api/generated";
+import { useTranslations } from "next-intl";
 import React from "react";
 import {
   AreaChart,
@@ -16,10 +17,13 @@ type TrendAreaChartProps = {
 };
 
 export default function TrendAreaChart({ data }: TrendAreaChartProps) {
+
+  const t = useTranslations();
+
   if (!data || data.length === 0)
     return (
       <div className="flex h-full items-center justify-center text-gray-400">
-        No Data
+        {t("Dashboard.chart.noData")}
       </div>
     );
   return (

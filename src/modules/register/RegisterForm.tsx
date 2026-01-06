@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { apiClient } from "@/api";
 import { CustomButton } from "@/app/components/Buttons/CustomButton";
+import { useTranslations } from "next-intl";
 
 type RegisterFormValues = {
   email: string;
@@ -17,6 +18,8 @@ type RegisterFormValues = {
 };
 
 export default function RegisterForm() {
+  const t = useTranslations();
+
   const {
     control,
     handleSubmit,
@@ -34,11 +37,14 @@ export default function RegisterForm() {
       const { confirmPassword, ...payload } = data;
       await apiClient.user.userControllerCreate(payload);
 
-      notification.showSuccess("Account created successfully!");
+      notification.showSuccess(t("Register.notifications.success"));
       router.push("/login");
     } catch (e) {
       if (e instanceof ApiError) {
-        notification.showError("Registration failed", e.body?.message);
+        notification.showError(
+          t("Register.notifications.error"),
+          e.body?.message
+        );
       }
     }
   };
@@ -52,14 +58,14 @@ export default function RegisterForm() {
       <FormInput<RegisterFormValues>
         name="email"
         control={control}
-        label="Email"
-        placeholder="john@example.com"
+        label={t("Register.form.emailLabel")}
+        placeholder={t("Register.form.emailPlaceholder")}
         type="email"
         rules={{
-          required: "Email is required",
+          required: t("Register.validation.emailRequired"),
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: "Invalid email address",
+            message: t("Register.validation.emailInvalid"),
           },
         }}
       />
@@ -67,14 +73,14 @@ export default function RegisterForm() {
       <FormInput<RegisterFormValues>
         name="password"
         control={control}
-        label="Password"
-        placeholder="Min 6 characters"
+        label={t("Register.form.passwordLabel")}
+        placeholder={t("Register.form.passwordPlaceholder")}
         type="password"
         rules={{
-          required: "Password is required",
+          required: t("Register.validation.passwordRequired"),
           minLength: {
             value: 6,
-            message: "Password must be at least 6 characters",
+            message: t("Register.validation.passwordMin"),
           },
         }}
       />
@@ -82,14 +88,14 @@ export default function RegisterForm() {
       <FormInput<RegisterFormValues>
         name="confirmPassword"
         control={control}
-        label="Confirm Password"
-        placeholder="Re-enter password"
+        label={t("Register.form.confirmLabel")}
+        placeholder={t("Register.form.confirmPlaceholder")}
         type="password"
         rules={{
-          required: "Please confirm your password",
+          required: t("Register.validation.confirmRequired"),
           validate: (val: string) => {
             if (watch("password") != val) {
-              return "Your passwords do not match";
+              return t("Register.validation.mismatch");
             }
           },
         }}
@@ -101,7 +107,7 @@ export default function RegisterForm() {
         className="w-full mt-4"
         loading={isSubmitting}
       >
-        Create Account
+        {t("Register.form.submitButton")}
       </CustomButton>
     </Form>
   );

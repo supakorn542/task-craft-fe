@@ -1,6 +1,7 @@
 import React from "react";
 import CustomModal from "@/app/components/Modals/CustomModal";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { useTranslations } from "next-intl";
 
 type TaskDeleteModalProps = {
   title: string | undefined;
@@ -17,24 +18,29 @@ export default function TaskDeleteModal({
   onConfirm,
   loading,
 }: TaskDeleteModalProps) {
+  const t = useTranslations();
+
   return (
     <CustomModal
-      title="Delete Task?"
+      title={t("Tasks.deleteModal.title")}
       open={open}
       onClose={onClose}
       onOk={onConfirm}
-      okText="Delete"
-      cancelText="Cancel"
+      okText={t("Tasks.deleteModal.confirm")}
+      cancelText={t("Tasks.deleteModal.cancel")}
       okButtonProps={{ danger: true }}
       confirmLoading={loading}
     >
       <div className="flex items-center gap-4 py-4">
         <ExclamationCircleFilled className="text-red-500 text-3xl" />
         <p>
-          Are you sure you want to delete task <b>{title}</b>?
+          {t.rich("Tasks.deleteModal.message", {
+            title: title || "",
+            b: (chunks) => <b>{chunks}</b>,
+          })}
           <br />
           <span className="text-sm text-gray-500">
-            This action cannot be undone.
+            {t("Tasks.deleteModal.warning")}
           </span>
         </p>
       </div>

@@ -304,7 +304,7 @@ export default function Tasks() {
 
   return (
     <div className="flex flex-col gap-2 py-4 px-2 md:px-0 md:pr-4 min-h-screen">
-      <PageHeader text={t("TasksPage.title")} />
+      <PageHeader text={t("Tasks.title")} />
       <TaskFilter active={filter} onChange={setFilter} />
       <div className="flex w-full flex-col md:flex-row gap-3 items-center justify-between">
         <div className="w-full">
@@ -312,7 +312,7 @@ export default function Tasks() {
             name="search"
             control={control}
             formItemProps={{ style: { marginBottom: 0 } }}
-            placeholder="Search tasks..."
+            placeholder={t("Tasks.searchPlaceholder")}
             prefix={<SearchOutlined style={{ color: "grey" }} />}
             allowClear
             className="w-full"
@@ -321,7 +321,7 @@ export default function Tasks() {
         <div className="grid grid-cols-2 md:flex gap-2 w-full md:w-auto">
           <Select
             mode="multiple"
-            placeholder="Filter by Tags"
+            placeholder={t("Tasks.filterTags")}
             className="w-full md:w-[180px]"
             maxTagCount="responsive"
             value={filterTags}
@@ -342,10 +342,10 @@ export default function Tasks() {
               setSortOrder(order as any);
             }}
             options={[
-              { label: "Newest Created", value: "createdAt_desc" },
-              { label: "Oldest Created", value: "createdAt_asc" },
-              { label: "Due Date (Near)", value: "dueDate_asc" },
-              { label: "Due Date (Far)", value: "dueDate_desc" },
+              { label: t("Tasks.sort.newest"), value: "createdAt_desc" },
+              { label: t("Tasks.sort.oldest"), value: "createdAt_asc" },
+              { label: t("Tasks.sort.dueNear"), value: "dueDate_asc" },
+              { label: t("Tasks.sort.dueFar"), value: "dueDate_desc" },
             ]}
             suffixIcon={<SortAscendingOutlined />}
           />
@@ -365,13 +365,7 @@ export default function Tasks() {
               <TaskColumn
                 key={col}
                 status={col as TaskStatus}
-                title={
-                  col === "TO_DO"
-                    ? "To Do"
-                    : col === "IN_PROGRESS"
-                    ? "In Progress"
-                    : "Done"
-                }
+                title={t(`Tasks.status.${col}`)}
                 tasks={taskList.filter((t) => t.status === col)}
                 onAddTask={() => handleOpenAddTaskModal(col as TaskStatus)}
                 onEditTask={(id) => handleOpenEditModal(id)}

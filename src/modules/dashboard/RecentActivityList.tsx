@@ -3,6 +3,7 @@ import React from "react";
 import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Avatar, List, Tag, Badge } from "antd";
+import { useTranslations } from "next-intl";
 
 type RecentActivityListProps = {
   data: TaskResponseDto[];
@@ -10,10 +11,12 @@ type RecentActivityListProps = {
 };
 
 export default function RecentActivityList({ data }: RecentActivityListProps) {
+  const t = useTranslations();
+
   if (!data || data.length === 0) {
     return (
       <div className="text-gray-400 text-center py-10">
-        No recent activities
+        {t("Dashboard.activity.empty")}
       </div>
     );
   }
@@ -25,13 +28,6 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
     ) : (
       <EditOutlined className="text-yellow-500" />
     );
-  };
-
-  const formatStatus = (status: string) => {
-    return status
-      .replace(/_/g, " ")
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   const getStatusColor = (status: string) => {
@@ -78,7 +74,8 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
             }
             description={
               <span className="text-[10px] sm:text-xs text-gray-600">
-                Updated {dayjs(item.updatedAt).format("DD MMM HH:mm")}
+                {t("Dashboard.activity.updated")}{" "}
+                {dayjs(item.updatedAt).format("DD MMM HH:mm")}
               </span>
             }
           />
@@ -88,7 +85,7 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
               item.status
             )}`}
           >
-            {formatStatus(item.status)}
+            {t(`Dashboard.status.${item.status}`)}
           </div>
         </List.Item>
       )}

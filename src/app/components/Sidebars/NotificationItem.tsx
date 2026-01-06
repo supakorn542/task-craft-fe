@@ -6,6 +6,7 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import { formatDistanceToNow } from "date-fns";
 import { th } from "date-fns/locale";
 import { NotificationResponseDto } from "@/api/generated";
+import { useTranslations } from "next-intl";
 
 type NotificationItemProps = {
   item: NotificationResponseDto;
@@ -16,10 +17,12 @@ export default function NotificationItem({
   item,
   onClick,
 }: NotificationItemProps) {
+  const t = useTranslations();
+
   const getMessage = () => {
     try {
       const params = JSON.parse(item.message);
-      return `งาน "${params.taskName}" ต้องส่งวันนี้`;
+      return t(`Notifications.taskDueMessage`, { taskName: params.taskName });
     } catch (e) {
       return item.message;
     }
@@ -37,7 +40,7 @@ export default function NotificationItem({
       onClick={() => onClick?.(item.id)}
       className={`
         flex gap-3 p-3 cursor-pointer transition-colors
-        ${item.isRead ? "bg-white opacity-90" : "bg-blue-50"} 
+        ${item.isRead ? "bg-white opacity-90" : "bg-blue-50"}
         hover:bg-gray-100
       `}
     >
@@ -60,7 +63,7 @@ export default function NotificationItem({
                 : "font-bold text-gray-900"
             }`}
           >
-            แจ้งเตือนงานวันนี้
+            {t("Notifications.taskDueTitle")}
           </h4>
           {!item.isRead && <Badge status="error" />}{" "}
         </div>
