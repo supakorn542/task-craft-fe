@@ -51,7 +51,7 @@ export default function TagsBarChart({ data }: TagsBarChartProps) {
 
         <Tooltip
           cursor={{ fill: "transparent" }}
-          formatter={(value: number) => [`${value} ${t("Dashboard.chart.tasks")}`, t("Dashboard.chart.count")]}
+          formatter={(value: number | undefined) => [`${value ?? 0} ${t("Dashboard.chart.tasks")}`, t("Dashboard.chart.count")]}
           contentStyle={{
             borderRadius: "8px",
             border: "none",

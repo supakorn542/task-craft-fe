@@ -49,9 +49,9 @@ export default function StatusPieChart({ data }: StatusPieChartProps) {
             <Cell key={`cell-${index}`} fill={item.color} stroke="none" />
           ))}
           <Tooltip
-            formatter={(value: number, name: string) => [
-              `${value} ${t("Dashboard.chart.tasks")}`,
-              getStatusName(name),
+            formatter={(value: number | undefined, name: string | undefined) => [
+              `${value ?? 0} ${t("Dashboard.chart.tasks")}`,
+              getStatusName(name ?? ""),
             ]}
             contentStyle={{
               borderRadius: "8px",

@@ -80,7 +80,7 @@ export default function NotificationBell() {
   };
 
   const content = (
-    <div className="flex flex-col w-80 max-h-[400px]">
+    <div className="flex flex-col w-80 max-h-100">
       <div className="p-3 bg-white sticky top-0 z-10 flex justify-between items-center">
         <h3 className="font-semibold text-gray-700 m-0">{t('Sidebar.notifications')}</h3>
       </div>

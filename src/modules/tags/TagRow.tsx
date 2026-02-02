@@ -117,14 +117,14 @@ export function TagRow({ tag, onUpdate, onDelete }: TagRowProps) {
           icon={<RiEdit2Fill />}
           onClick={() => setIsEditing(true)}
           variant="secondary"
-          className="!p-2"
+          className="p-2!"
         />
         <CustomButton
           danger
           icon={<RiDeleteBin6Fill />}
           onClick={() => onDelete(tag)}
           variant="outline"
-          className="!p-2"
+          className="p-2!"
         />
       </div>
     </div>

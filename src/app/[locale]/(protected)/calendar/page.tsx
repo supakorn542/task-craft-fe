@@ -208,7 +208,7 @@ export default function TaskCalendar() {
   return (
     <>
       <div className="flex flex-col gap-2 py-4 pr-2 md:pr-4 h-screen overflow-hidden">
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <PageHeader text={t("Calendar.title")} />
         </div>
 

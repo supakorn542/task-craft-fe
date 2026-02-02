@@ -6,7 +6,7 @@ export default function TaskSkeleton() {
   return (
     <div className="flex gap-4 overflow-x-auto">
       {columns.map((col) => (
-        <div key={col} className="min-w-[280px] md:min-w-[320px] flex-1">
+        <div key={col} className="min-w-70 md:min-w-[320px] flex-1">
           <div className="h-10 bg-gray-200 rounded mb-4 animate-pulse" />
           <div className="flex flex-col gap-3">
             {[1, 2, 3].map((item) => (

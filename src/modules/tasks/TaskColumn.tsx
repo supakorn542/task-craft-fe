@@ -51,7 +51,7 @@ export default function TaskColumn({
       className={`
         flex flex-col w-full p-3 rounded-xl transition-colors duration-200
         overflow-y-auto overflow-x-hidden max-h-[75vh] scrollbar-none
-        min-w-[280px] min-h-[200px] snap-center
+        min-w-70 min-h-50 snap-center
         ${
           isActiveColumn ? "bg-gray-100 ring-2 ring-gray-200" : "bg-transparent"
         }

@@ -68,7 +68,7 @@ export default function NotificationItem({
           {!item.isRead && <Badge status="error" />}{" "}
         </div>
 
-        <p className="text-sm text-gray-600 break-words line-clamp-2">
+        <p className="text-sm text-gray-600 wrap-break-word line-clamp-2">
           {getMessage()}
         </p>
 

@@ -64,7 +64,7 @@ export default function RecentActivityList({ data }: RecentActivityListProps) {
                     <Tag
                       color={tag.color}
                       key={tag.id}
-                      className="!mr-0 !text-[10px] !px-1 !leading-tight"
+                      className="mr-0! text-[10px]! px-1! leading-tight!"
                     >
                       {tag.name}
                     </Tag>

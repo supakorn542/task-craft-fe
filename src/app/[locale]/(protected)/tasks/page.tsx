@@ -322,7 +322,7 @@ export default function Tasks() {
           <Select
             mode="multiple"
             placeholder={t("Tasks.filterTags")}
-            className="w-full md:w-[180px]"
+            className="w-full md:w-45"
             maxTagCount="responsive"
             value={filterTags}
             onChange={setFilterTags}
@@ -335,7 +335,7 @@ export default function Tasks() {
 
           <Select
             defaultValue="createdAt_desc"
-            className="w-full md:w-[180px]"
+            className="w-full md:w-45"
             onChange={(value) => {
               const [field, order] = value.split("_");
               setSortBy(field as any);
