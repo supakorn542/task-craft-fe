@@ -11,6 +11,7 @@ import { NotificationProvider } from "../contexts/NotificationContext";
 import { AuthProvider } from "@/app/contexts/AuthContext";
 import { ConfigProvider } from "antd";
 import TagProvider from "../contexts/TagContext";
+import '@ant-design/v5-patch-for-react-19';
 
 type Props = {
   children: ReactNode;
