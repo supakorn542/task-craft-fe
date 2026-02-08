@@ -6,16 +6,18 @@ import { apiClient } from "@/api";
 import { useNotify } from "@/app/contexts/NotificationContext";
 import { getErrorMessage } from "@/utils/error";
 import { useRouter } from "@/i18n/navigation";
-import { Empty, Spin } from "antd";
+import { Empty } from "antd";
 
 import NotificationItem from "@/app/components/Sidebars/NotificationItem";
 import PageHeader from "@/app/components/PageHeader";
 import ListSkeleton from "@/app/components/Skeletons/ListSkeleton";
 import { useTranslations } from "next-intl";
+import { useSocket } from "@/app/contexts/SocketContext";
 
 export default function NotificationsPage() {
   const t = useTranslations();
   const notification = useNotify();
+  const { socket } = useSocket();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<NotificationResponseDto[]>([]);
@@ -29,7 +31,7 @@ export default function NotificationsPage() {
     } catch (e) {
       notification.showError(
         t("Notifications.failedToLoad"),
-        getErrorMessage(e)
+        getErrorMessage(e),
       );
     } finally {
       setLoading(false);
@@ -39,7 +41,7 @@ export default function NotificationsPage() {
   const handleMarkAsRead = async (id: string, taskId?: string) => {
     try {
       setList((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, isRead: true } : item))
+        prev.map((item) => (item.id === id ? { ...item, isRead: true } : item)),
       );
 
       await apiClient.notification.notificationControllerUpdateIsRead(id);
@@ -48,14 +50,27 @@ export default function NotificationsPage() {
         router.push(`/tasks?taskId=${taskId}`);
       }
     } catch (e) {
-      notification.showError(t("Notifications.actionFailed"), getErrorMessage(e));
+      notification.showError(
+        t("Notifications.actionFailed"),
+        getErrorMessage(e),
+      );
       getNotificationList();
     }
   };
 
   useEffect(() => {
-    getNotificationList();
-  }, []);
+    if (!socket) return;
+
+    const handleNewNotification = () => {
+      getNotificationList();
+    };
+
+    socket.on("new_notification", handleNewNotification);
+
+    return () => {
+      socket.off("new_notification", handleNewNotification);
+    };
+  }, [socket]);
 
   return (
     <div className="flex flex-col gap-4 py-4 px-4 md:px-0 md:pr-4 min-h-screen">

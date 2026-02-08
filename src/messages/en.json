@@ -204,7 +204,11 @@
     "taskDueTitle": "Task Due Today",
     "taskDueMessage": "Task \"{taskName}\" is due today",
     "failedToLoad": "Failed to load notifications",
-    "actionFailed": "Action failed"
+    "actionFailed": "Action failed",
+    "daily_reminder": "Daily Brief",
+    "evening_reminder": "Evening Nudge",
+    "taskDue": "Task \"{taskName}\" is due today.",
+    "taskUrgent": "Urgent! \"{taskName}\" is still pending."
   },
   "Login": {
     "title": "Welcome Back",

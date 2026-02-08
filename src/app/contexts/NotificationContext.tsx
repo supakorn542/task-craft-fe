@@ -1,7 +1,9 @@
 "use client";
 
-import React, { createContext, ReactNode, useContext } from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 import { notification } from "antd";
+import { useAuth } from "./AuthContext";
+import { Socket } from "socket.io-client";
 
 type NotificationContextProps = {
   showSuccess: (msg: string, decs?: string) => void;
@@ -9,7 +11,7 @@ type NotificationContextProps = {
 };
 
 const NotificationContext = createContext<NotificationContextProps | null>(
-  null
+  null,
 );
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {

@@ -13,9 +13,12 @@ import { getErrorMessage } from "@/utils/error";
 import NotificationItem from "./NotificationItem";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { useSocket } from "@/app/contexts/SocketContext";
 
 export default function NotificationBell() {
   const notification = useNotify();
+
+  const { socket } = useSocket();
 
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +56,7 @@ export default function NotificationBell() {
     } catch (e) {
       notification.showError(
         "Get notification list failed",
-        getErrorMessage(e)
+        getErrorMessage(e),
       );
     } finally {
       setLoading(false);
@@ -61,8 +64,18 @@ export default function NotificationBell() {
   };
 
   useEffect(() => {
+   if(!socket) return;
+
+   const handleNewNotification = () => {
     getUnreadCount();
-  }, []);
+   }
+
+   socket.on("new_notification", handleNewNotification)
+
+   return () => {
+      socket.off("new_notification", handleNewNotification);
+    };
+  }, [socket]);
 
   const handleMarkAsRead = async (id: string, taskId?: string) => {
     try {
@@ -82,14 +95,20 @@ export default function NotificationBell() {
   const content = (
     <div className="flex flex-col w-80 max-h-100">
       <div className="p-3 bg-white sticky top-0 z-10 flex justify-between items-center">
-        <h3 className="font-semibold text-gray-700 m-0">{t('Sidebar.notifications')}</h3>
+        <h3 className="font-semibold text-gray-700 m-0">
+          {t("Sidebar.notifications")}
+        </h3>
       </div>
 
       <div className="overflow-y-auto flex-1 rounded-lg">
         {loading ? (
-          <div className="p-8 text-center text-gray-400">{t('Common.loading')}</div>
+          <div className="p-8 text-center text-gray-400">
+            {t("Common.loading")}
+          </div>
         ) : notificationList.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">{t('Notifications.empty')}</div>
+          <div className="p-8 text-center text-gray-400">
+            {t("Notifications.empty")}
+          </div>
         ) : (
           notificationList.map((item) => (
             <NotificationItem
@@ -108,7 +127,7 @@ export default function NotificationBell() {
           onClick={() => router.push("/notifications")}
           className="text-xs text-brand hover:underline cursor-pointer"
         >
-          {t('Common.viewAll')}
+          {t("Common.viewAll")}
         </button>
       </div>
     </div>

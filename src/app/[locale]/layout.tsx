@@ -11,6 +11,7 @@ import { AuthProvider } from "@/app/contexts/AuthContext";
 import TagProvider from "../contexts/TagContext";
 import { AntdProvider } from "../components/AntdProvier";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { SocketProvider } from "../contexts/SocketContext";
 
 type Props = {
   children: ReactNode;
@@ -40,7 +41,9 @@ export default async function RootLayout({ children, params }: Props) {
             <AntdProvider>
               <NotificationProvider>
                 <AuthProvider>
-                  <TagProvider>{children}</TagProvider>
+                  <SocketProvider>
+                    <TagProvider>{children}</TagProvider>
+                  </SocketProvider>
                 </AuthProvider>
               </NotificationProvider>
             </AntdProvider>

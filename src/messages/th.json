@@ -204,7 +204,11 @@
     "taskDueTitle": "แจ้งเตือนงานวันนี้",
     "taskDueMessage": "งาน \"{taskName}\" ต้องส่งวันนี้",
     "failedToLoad": "โหลดข้อมูลไม่สำเร็จ",
-    "actionFailed": "ดำเนินการไม่สำเร็จ"
+    "actionFailed": "ดำเนินการไม่สำเร็จ",
+    "daily_reminder": "สรุปงานประจำวัน",
+    "evening_reminder": "ติดตามงานค้าง",
+    "taskDue": "คุณมีงาน \"{taskName}\" ที่ต้องส่งวันนี้",
+    "taskUrgent": "ด่วน! งาน \"{taskName}\" ยังไม่เสร็จนะ"
   },
   "Login": {
     "title": "ยินดีต้อนรับกลับ",
