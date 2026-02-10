@@ -11,6 +11,7 @@ import { io, Socket } from "socket.io-client";
 import { useAuth } from "./AuthContext";
 import { useNotify } from "./NotificationContext";
 import { useTranslations } from "next-intl";
+import { NotificationResponseDto } from "@/api/generated";
 
 type SocketContextProps = {
   socket: Socket | null;
@@ -53,16 +54,28 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       setIsConnected(false);
     });
 
-    newSocket.on("new_notification", (data: any) => {
+    newSocket.on("new_notification", (data: NotificationResponseDto) => {
       let description = data.message;
+      let title = t(data.title);
 
       try {
         const parsed = JSON.parse(data.message);
-        description = parsed.taskName
-          ? t("Notifications.taskDue", { taskName: parsed.taskName })
-          : data.message;
-      } catch (e) {}
-      notification.showSuccess(t(data.title) || "แจ้งเตือนใหม่", description);
+
+        if (parsed.taskName) {
+          if (data.title === "Notifications.evening_reminder") {
+            description = t("Notifications.taskUrgent", {
+              taskName: parsed.taskName,
+            });
+          } else {
+            description = t("Notifications.taskDue", {
+              taskName: parsed.taskName,
+            });
+          }
+        }
+      } catch (e) {
+        console.error("Failed to parse notification message", e);
+      }
+      notification.showSuccess(title || "แจ้งเตือนใหม่", description);
     });
 
     setSocket(newSocket);
