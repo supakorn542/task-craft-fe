@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button, Form } from "antd";
+import { Button, Divider, Form } from "antd";
 import { FormInput } from "../../app/components/Input/FormInput";
 import { ApiError } from "@/api/generated";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ import { CustomButton } from "@/app/components/Buttons/CustomButton";
 import { Link } from "@/i18n/navigation";
 import { getErrorMessage } from "@/utils/error";
 import { useTranslations } from "next-intl";
+import { FcGoogle } from "react-icons/fc";
 
 type LoginFormValues = {
   email: string;
@@ -38,6 +39,11 @@ export default function LoginForm() {
     } catch (e) {
       notification.showError("Login failed", getErrorMessage(e));
     }
+  };
+
+  const handleGoogleLogin = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    window.location.href = `${apiUrl}/auth/google/redirect`;
   };
 
   return (
@@ -78,6 +84,20 @@ export default function LoginForm() {
         className="w-full mt-2"
       >
         {t("Login.form.submitButton")}
+      </CustomButton>
+
+      <div className="relative my-4">
+        <Divider plain>Or continue with</Divider>
+      </div>
+
+      <CustomButton
+        type="default"
+        variant="secondary"
+        className="w-full flex items-center justify-center gap-2"
+        onClick={handleGoogleLogin}
+      >
+        <FcGoogle size={20} />
+        <span>Sign in with Google</span>
       </CustomButton>
 
       <div className="mt-4 text-center text-sm text-gray-500">
